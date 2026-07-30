@@ -1,4 +1,4 @@
-NAME = mutantStack
+NAME = btc
 
 CXX = c++
 
