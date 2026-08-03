@@ -6,7 +6,7 @@
 /*   By: gaducurt <gaducurt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/29 14:45:08 by gaducurt          #+#    #+#             */
-/*   Updated: 2026/08/03 14:36:48 by gaducurt         ###   ########.fr       */
+/*   Updated: 2026/08/03 14:51:32 by gaducurt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,22 @@ void	BitcoinExchange::fillInputMap(std::string input)
 	std::fstream	inputFile;
 	inputFile.open(input.c_str());
 	while (getline(inputFile, line))
-		std::cout << GREEN << line << RESET << std::endl;
+	{
+		std::string	key;
+		std::string	value;
+		int			i = 0;
+		int			j = 0;
+		for (i; line[i] != '|'; i++)
+			key[i] = line[i];
+		i++;
+		for (i; line[i]; i++)
+		{
+			value[j] = line[i];
+			j++;
+		}
+		std::cout << "key = " << key << "\nvalue = " << value << std::endl;
+		// std::cout << GREEN << line << RESET << std::endl;
+	}
 	inputFile.close();
 }
 
