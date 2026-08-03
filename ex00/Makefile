@@ -10,7 +10,7 @@ INC = include
 
 INCLUDE = $(addprefix -I , $(INC))
 
-SRC =	main.cpp	\
+SRC =	main.cpp BitcoinExchange.cpp	\
 
 OBJ := $(addprefix $(BIN), $(SRC:.cpp=.o))
 DEPS =   $(OBJ:.o=.d)
