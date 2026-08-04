@@ -6,7 +6,7 @@
 /*   By: gaducurt <gaducurt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/07 17:26:24 by gaducurt          #+#    #+#             */
-/*   Updated: 2026/08/03 14:30:52 by gaducurt         ###   ########.fr       */
+/*   Updated: 2026/08/04 14:02:33 by gaducurt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 class BitcoinExchange
 {
 	private:
-		std::map<std::string, float>	_dbMap;
+		std::map<std::string, std::string>	_dbMap;
 		std::map<std::string, float>	_inputMap;
 		// std::fstream					_db;
 		// std::fstream					_input;
@@ -35,6 +35,7 @@ class BitcoinExchange
 		void	calcul();
 		void	fillDbMap();
 		void	fillInputMap(std::string db);
+		void	displayDb();
 };
 
 #endif
