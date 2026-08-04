@@ -6,7 +6,7 @@
 /*   By: gaducurt <gaducurt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/29 14:45:08 by gaducurt          #+#    #+#             */
-/*   Updated: 2026/08/04 14:21:04 by gaducurt         ###   ########.fr       */
+/*   Updated: 2026/08/04 14:37:09 by gaducurt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ void	BitcoinExchange::fillDbMap()
 	std::stringstream	ss(line);
 
 	db.open("data.csv");
-	// std::map<std::string, std::string>::iterator it = _dbMap.begin();
 	while (getline(db, line))
 	{
 		std::string	key;
@@ -97,24 +96,7 @@ void	BitcoinExchange::fillDbMap()
 		std::stringstream	ss(line);
 		getline(ss, key, ',');
 		getline(ss, val, ',');
-		// _dbMap.insert(std::pair<std::string, std::string>{key, val});
 		_dbMap[key] = val;
-		// it->first = token;
-		// while (getline(ss, token, ','))
-		// {
-			
-		// }
-		// int			i = 0;
-		// int			j = 0;
-		// for (; line[i] != ','; i++)
-		// 	key[i] = line[i];
-		// i++;
-		// for (; line[i]; i++)
-		// {
-		// 	// value[j] = atof(line[i]);
-		// 	j++;
-		// }
-		// std::cout << BLUE << line << RESET << std::endl;
 	}
 	db.close();
 }
