@@ -6,7 +6,7 @@
 /*   By: gaducurt <gaducurt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/07 17:26:24 by gaducurt          #+#    #+#             */
-/*   Updated: 2026/08/04 14:43:40 by gaducurt         ###   ########.fr       */
+/*   Updated: 2026/08/05 16:19:29 by gaducurt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,21 +21,18 @@
 class BitcoinExchange
 {
 	private:
-		// std::map<std::string, std::string>	_dbMap;
-		std::map<std::time_t, float>	_dbMap;
-		std::map<std::string, float>	_inputMap;
-		// std::fstream					_db;
-		// std::fstream					_input;
+		std::map<std::string, float>	_dbMap;
+		std::string						_input;
+		// std::map<std::time_t, float>	_dbMap;
     public:
 		BitcoinExchange();
 		BitcoinExchange(const BitcoinExchange &obj);
 		BitcoinExchange &operator=(const BitcoinExchange &obj);
 		~BitcoinExchange();
 		BitcoinExchange(std::string input);
-		void	parser();
+		bool	checkDate(std::string date);
 		void	calcul();
 		void	fillDbMap();
-		void	fillInputMap(std::string db);
 		void	displayDb();
 };
 
