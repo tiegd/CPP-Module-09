@@ -1,4 +1,4 @@
-NAME = btc
+NAME = RPN
 
 CXX = c++
 
@@ -10,7 +10,7 @@ INC = include
 
 INCLUDE = $(addprefix -I , $(INC))
 
-SRC =	main.cpp BitcoinExchange.cpp	\
+SRC =	main.cpp RPN.cpp	\
 
 OBJ := $(addprefix $(BIN), $(SRC:.cpp=.o))
 DEPS =   $(OBJ:.o=.d)

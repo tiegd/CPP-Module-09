@@ -6,7 +6,7 @@
 /*   By: gaducurt <gaducurt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/29 14:45:08 by gaducurt          #+#    #+#             */
-/*   Updated: 2026/08/05 17:02:07 by gaducurt         ###   ########.fr       */
+/*   Updated: 2026/08/06 19:18:08 by gaducurt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ BitcoinExchange::BitcoinExchange(std::string input)
 	try
 	{
 		fillDbMap();
-		calcul();
 	}
 	catch (std::exception &e)
 	{
@@ -92,7 +91,7 @@ void	BitcoinExchange::fillDbMap()
 	db.close();
 }
 
-void	BitcoinExchange::calcul()
+void	BitcoinExchange::compute()
 {
 	std::string			line;
 	std::fstream		input;

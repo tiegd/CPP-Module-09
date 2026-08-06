@@ -1,40 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   BitcoinExchange.hpp                                :+:      :+:    :+:   */
+/*   RPN.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gaducurt <gaducurt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/07/07 17:26:24 by gaducurt          #+#    #+#             */
-/*   Updated: 2026/08/06 19:15:41 by gaducurt         ###   ########.fr       */
+/*   Created: 2026/08/06 15:11:25 by gaducurt          #+#    #+#             */
+/*   Updated: 2026/08/06 18:46:41 by gaducurt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef __BITCOIN__
-#define __BITCOIN__
+#ifndef __RPN__
+#define __RPN__
 
-#include <fstream>
+#include <stack>
+#include <string>
 #include <iostream>
-#include <map>
-#include <ctime>
 
-class BitcoinExchange
+class   Rpn
 {
 	private:
-		std::map<std::string, double>	_dbMap;
-		std::string						_input;
-    public:
-		BitcoinExchange();
-		BitcoinExchange(const BitcoinExchange &obj);
-		BitcoinExchange &operator=(const BitcoinExchange &obj);
-		~BitcoinExchange();
-		BitcoinExchange(std::string input);
-		bool	checkDate(std::string date);
-		bool	checkCoef(double coef);
+		std::stack<int>	_stack;
+		std::string		_input;
+		Rpn();
+		void	parser();
+		void	add();
+		void	sub();
+		void	mult();
+		void	div();
+	public:
+		Rpn(const Rpn &obj);
+		Rpn &operator=(const Rpn &obj);
+		~Rpn();
+		Rpn(std::string input);
 		void	compute();
-		void	fillDbMap();
-		void	displayDb();
-		int		countDecimal(double nb);
 };
 
 #endif
