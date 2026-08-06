@@ -32,7 +32,7 @@ BitcoinExchange& BitcoinExchange::operator=(const BitcoinExchange &obj)
 		_dbMap = obj._dbMap;
 		_input = obj._input;
 	}
-	return (*this);
+	return *this;
 }
 
 BitcoinExchange::~BitcoinExchange()
@@ -43,7 +43,6 @@ BitcoinExchange::~BitcoinExchange()
 BitcoinExchange::BitcoinExchange(std::string input)
 {
 	std::ifstream db;
-	// (void)input;
 	_input = input;
 	try
 	{
@@ -54,12 +53,11 @@ BitcoinExchange::BitcoinExchange(std::string input)
 	{
 		std::cerr << e.what() << std::endl;
 	}
-	// displayDb();
 }
 
 void	BitcoinExchange::displayDb()
 {
-	for (std::map<std::string, float>::iterator it = _dbMap.begin(); it != _dbMap.end(); it++)
+	for (std::map<std::string, double>::iterator it = _dbMap.begin(); it != _dbMap.end(); it++)
 		std::cout << it->first << "\n" << it->second << "\n" << std::endl;
 }
 
@@ -100,7 +98,7 @@ void	BitcoinExchange::calcul()
 	std::fstream		input;
 	std::string			tmp;
 	int		i = 0;
-	float	coef;
+	double	coef;
 
 	input.open(_input.c_str());
 	while (getline(input, line))
@@ -109,26 +107,25 @@ void	BitcoinExchange::calcul()
 		if (i > 0)
 		{
 			getline(ss, tmp, ' ');
-			// std::string	date;
-			// std::cout << tmp << std::endl;
 			if (checkDate(tmp))
 			{
-				// std::map<std::string, float>::iterator it = _dbMap.find(tmp);
-				std::map<std::string, float>::iterator it = _dbMap.lower_bound(tmp);
-				// std::map<std::string, float>::iterator it = std::lower_bound(_dbMap.begin(), _dbMap.end(), tmp);
+				std::map<std::string, double>::iterator it = _dbMap.lower_bound(tmp);
 				if (it != _dbMap.end())
 				{
-					// std::cout << "date = " << it->first << " prix = " << it->second << std::endl;
+					if (it->first != tmp)
+						it--;
 					getline(ss, tmp, ' ');
 					getline(ss, tmp, ' ');
-					// std::cout << tmp << std::endl;
 					coef = atof(tmp.c_str());
-					// std::cout << "coef = " << coef << "\nresult = " << it->second * coef << std::endl;
-					std::cout << it->first << " => " << it->second << " = " << coef * it->second << std::endl;
+					if (checkCoef(coef))
+					{
+						int nbFloat = countDecimal(it->second);
+						std::cout << it->first << " => " << coef << " = " << std::setprecision(nbFloat + 4) << coef * it->second << std::endl;
+					}
 				}
 			}
 			else if (!checkDate(tmp))
-				std::cout << "Error: bad input (data) => " << tmp << std::endl;
+				std::cout << "Error: bad input => " << tmp << std::endl;
 		}
 		i++;
 	}
@@ -142,9 +139,33 @@ bool	BitcoinExchange::checkDate(std::string date)
 	std::time_t	time = mktime(&tm);
 	char	buff[11];
 	std::strftime(buff, sizeof(buff), "%Y-%m-%d", &tm);
-	// std::cout << BLUE << date << RESET << std::endl;
-	// std::cout << RED << buff << RESET << std::endl;
 	if (time == -1 || buff != date)
 		return false;
 	return true;
+}
+
+bool	BitcoinExchange::checkCoef(double coef)
+{
+	if (coef < 0)
+	{
+		std::cout << "Error: not a positive number." << std::endl;
+		return false;
+	}
+	if (coef > 1000)
+	{
+		std::cout << "Error: too large a number." << std::endl;
+		return false;
+	}
+	return true;
+}
+
+int	BitcoinExchange::countDecimal(double nb)
+{
+	int	i = 0;
+	while (nb > 1)
+	{
+		nb /= 10;
+		i++;
+	}
+	return i;
 }

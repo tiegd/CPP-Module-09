@@ -21,7 +21,7 @@
 class BitcoinExchange
 {
 	private:
-		std::map<std::string, float>	_dbMap;
+		std::map<std::string, double>	_dbMap;
 		std::string						_input;
 		// std::map<std::time_t, float>	_dbMap;
     public:
@@ -31,9 +31,11 @@ class BitcoinExchange
 		~BitcoinExchange();
 		BitcoinExchange(std::string input);
 		bool	checkDate(std::string date);
+		bool	checkCoef(double coef);
 		void	calcul();
 		void	fillDbMap();
 		void	displayDb();
+		int		countDecimal(double nb);
 };
 
 #endif
