@@ -6,16 +6,12 @@
 /*   By: gaducurt <gaducurt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/29 14:45:08 by gaducurt          #+#    #+#             */
-/*   Updated: 2026/08/06 19:18:08 by gaducurt         ###   ########.fr       */
+/*   Updated: 2026/08/07 10:33:24 by gaducurt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "BitcoinExchange.hpp"
 #include <bits/stdc++.h>
-#include <utility>
-#include <iomanip>
-#include <ctime>
-#include <algorithm>
 
 BitcoinExchange::BitcoinExchange()
 {

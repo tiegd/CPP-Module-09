@@ -6,12 +6,11 @@
 /*   By: gaducurt <gaducurt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/06 15:11:11 by gaducurt          #+#    #+#             */
-/*   Updated: 2026/08/06 19:12:14 by gaducurt         ###   ########.fr       */
+/*   Updated: 2026/08/07 10:37:10 by gaducurt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "RPN.hpp"
-#include <cctype>
 #include <sstream>
 #include <cstdlib>
 

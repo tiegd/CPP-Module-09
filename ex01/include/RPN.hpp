@@ -6,7 +6,7 @@
 /*   By: gaducurt <gaducurt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/06 15:11:25 by gaducurt          #+#    #+#             */
-/*   Updated: 2026/08/06 18:46:41 by gaducurt         ###   ########.fr       */
+/*   Updated: 2026/08/07 10:37:44 by gaducurt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #define __RPN__
 
 #include <stack>
-#include <string>
 #include <iostream>
 
 class   Rpn

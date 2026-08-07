@@ -2,7 +2,7 @@ NAME = btc
 
 CXX = c++
 
-CXXFLAGS = -Wall -Wextra -Werror -MD -std=c++98 -g3
+CXXFLAGS = -Wall -Wextra -Werror -MD -std=c++98
 
 BIN = bin/
 

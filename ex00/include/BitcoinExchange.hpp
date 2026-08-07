@@ -6,17 +6,15 @@
 /*   By: gaducurt <gaducurt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/07 17:26:24 by gaducurt          #+#    #+#             */
-/*   Updated: 2026/08/06 19:15:41 by gaducurt         ###   ########.fr       */
+/*   Updated: 2026/08/07 10:34:07 by gaducurt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef __BITCOIN__
 #define __BITCOIN__
 
-#include <fstream>
 #include <iostream>
 #include <map>
-#include <ctime>
 
 class BitcoinExchange
 {
@@ -38,9 +36,3 @@ class BitcoinExchange
 };
 
 #endif
-
-#define RED     "\033[31m"
-#define GREEN   "\033[32m"
-#define YELLOW  "\033[33m"
-#define BLUE    "\033[34m"
-#define RESET   "\033[0m"
