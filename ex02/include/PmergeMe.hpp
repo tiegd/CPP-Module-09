@@ -6,7 +6,7 @@
 /*   By: gaducurt <gaducurt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/10 11:19:16 by gaducurt          #+#    #+#             */
-/*   Updated: 2026/08/10 14:59:58 by gaducurt         ###   ########.fr       */
+/*   Updated: 2026/08/17 10:39:37 by gaducurt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include <string>
 #include <vector>
+#include <deque>
 
 class PmergeMe
 {
@@ -25,7 +26,7 @@ class PmergeMe
 		double				_time2;
 		std::string			_input;
 		std::vector<int>	_cont1;
-		// std::autre			_cont2; 
+		std::deque<int>		_cont2; 
 	public:
 		PmergeMe();
 		PmergeMe(const PmergeMe &obj);
