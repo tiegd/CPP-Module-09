@@ -6,7 +6,7 @@
 /*   By: gaducurt <gaducurt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/10 11:19:16 by gaducurt          #+#    #+#             */
-/*   Updated: 2026/08/17 10:39:37 by gaducurt         ###   ########.fr       */
+/*   Updated: 2026/08/21 14:11:29 by gaducurt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 class PmergeMe
 {
 	private:
-		int*				_intArray;
+		// int*				_intArray;
 		double				_timeManagement;
 		double				_time1;
 		double				_time2;
@@ -32,7 +32,7 @@ class PmergeMe
 		PmergeMe(const PmergeMe &obj);
 		PmergeMe &operator=(const PmergeMe &obj);
 		~PmergeMe();
-		PmergeMe(std::string include);
+		PmergeMe(char** av);
 		void	mergeInset();
 		void	sort1(); // change the name after chosing both containers.
 		void	sort2(); // change the name after chosing both containers.
