@@ -6,7 +6,7 @@
 /*   By: gaducurt <gaducurt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/10 11:19:16 by gaducurt          #+#    #+#             */
-/*   Updated: 2026/08/21 14:11:29 by gaducurt         ###   ########.fr       */
+/*   Updated: 2026/08/21 16:18:27 by gaducurt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,15 @@ class PmergeMe
 		double				_timeManagement;
 		double				_time1;
 		double				_time2;
-		std::string			_input;
-		std::vector<int>	_cont1;
-		std::deque<int>		_cont2; 
+		std::vector<int>	_vec;
+		std::deque<int>		_deq; 
 	public:
 		PmergeMe();
 		PmergeMe(const PmergeMe &obj);
 		PmergeMe &operator=(const PmergeMe &obj);
 		~PmergeMe();
 		PmergeMe(char** av);
+		void	printVec();
 		void	mergeInset();
 		void	sort1(); // change the name after chosing both containers.
 		void	sort2(); // change the name after chosing both containers.
