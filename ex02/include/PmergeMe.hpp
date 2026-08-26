@@ -6,7 +6,7 @@
 /*   By: gaducurt <gaducurt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/10 11:19:16 by gaducurt          #+#    #+#             */
-/*   Updated: 2026/08/26 14:12:11 by gaducurt         ###   ########.fr       */
+/*   Updated: 2026/08/26 15:24:02 by gaducurt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@
 
 typedef struct	Pair
 {
-	int		_small;
-	int		_large;
-	int		_index;
-	bool	_isAlone;
+	size_t		_small;
+	size_t		_large;
+	size_t		_index;
+	bool		_isAlone;
 }				Pair;
 
 class PmergeMe
@@ -43,7 +43,7 @@ class PmergeMe
 		// std::vector<Nb>	_vec;
 		// std::deque<int>		_deq; 
 		std::vector<Pair>		_vec;
-		std::vector<int>		_jacob;
+		std::vector<size_t>		_jacob;
 		std::deque<Pair>		_deq; 
 	public:
 		PmergeMe();
@@ -54,7 +54,7 @@ class PmergeMe
 		void	printVec();
 		void	printDeq();
 		void	printJacob();
-		void	swap(int* a, int* b);
+		void	swap(size_t* a, size_t* b);
 		void	genJacobsthal();
 		void	mergeInset();
 		void	sort1(); // change the name after chosing both containers.

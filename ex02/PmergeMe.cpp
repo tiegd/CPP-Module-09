@@ -6,7 +6,7 @@
 /*   By: gaducurt <gaducurt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/10 11:19:19 by gaducurt          #+#    #+#             */
-/*   Updated: 2026/08/26 14:21:24 by gaducurt         ###   ########.fr       */
+/*   Updated: 2026/08/26 15:24:40 by gaducurt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,13 @@ PmergeMe::~PmergeMe(){}
 
 void	PmergeMe::printVec()
 {
-	std::cout << "\n----------Vector----------\n" << std::endl;
+	// std::cout << "\n----------Vector----------\n" << std::endl;
+	// for (size_t i = 0; i < _vec.size(); i++)
+	// 	std::cout << "_vec[" << i << "] =\n_small = " << _vec[i]._small << "\n_large = " << _vec[i]._large << "\n_index = " << _vec[i]._index << "\n_isAlone = " << _vec[i]._isAlone << '\n' << std::endl;
+	std::cout << "\n----------Vector----------\n\n_vec = ";
 	for (size_t i = 0; i < _vec.size(); i++)
-		std::cout << "_vec[" << i << "] =\n_small = " << _vec[i]._small << "\n_large = " << _vec[i]._large << "\n_index = " << _vec[i]._index << "\n_isAlone = " << _vec[i]._isAlone << '\n' << std::endl;
+		std::cout << i << "[" << _vec[i]._small << " " << _vec[i]._large << "] ";
+	std::cout << std::endl;
 }
 
 void	PmergeMe::printDeq()
@@ -56,7 +60,7 @@ void	PmergeMe::printJacob()
 	std::cout << std::endl;
 }
 
-void	PmergeMe::swap(int *a, int *b)
+void	PmergeMe::swap(size_t *a, size_t *b)
 {
 	int p;
 	p = *a;
@@ -66,16 +70,16 @@ void	PmergeMe::swap(int *a, int *b)
 
 void	PmergeMe::genJacobsthal()
 {
-	int	res = 0;
+	size_t	res = 0;
 	int i = 2;
 
 	_jacob.push_back(0);
 	_jacob.push_back(1);
 	std::cout << "_vec.size() = " << _vec.size() << std::endl;
-	while (res < (int)_vec.size())
+	while (res < _vec.size())
 	{
 		res = _jacob[i - 2] * 2 + _jacob[i - 1];
-		if (res > (int)_vec.size())
+		if (res > _vec.size())
 			break;
 		_jacob.push_back(res);
 		i++;
@@ -127,7 +131,7 @@ PmergeMe::PmergeMe(int ac, char** av)
 		_deq.push_back(alone);
 	}
 	printVec();
-	printDeq();
+	// printDeq();
 	genJacobsthal();
 }
 
