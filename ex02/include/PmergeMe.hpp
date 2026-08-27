@@ -6,7 +6,7 @@
 /*   By: gaducurt <gaducurt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/10 11:19:16 by gaducurt          #+#    #+#             */
-/*   Updated: 2026/08/26 15:24:02 by gaducurt         ###   ########.fr       */
+/*   Updated: 2026/08/27 16:16:47 by gaducurt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,26 +39,38 @@ class PmergeMe
 		double				_timeManagement;
 		double				_time1;
 		double				_time2;
-		// std::vector<int>	_vec;
+		std::vector<int>	_vecInput;
+		std::vector<int>	_vecResult;
+		std::vector<size_t>	_jacobVec;
 		// std::vector<Nb>	_vec;
-		// std::deque<int>		_deq; 
-		std::vector<Pair>		_vec;
-		std::vector<size_t>		_jacob;
-		std::deque<Pair>		_deq; 
+		std::deque<int>		_deqInput;
+		std::deque<int>		_deqResult;
+		std::vector<size_t>	_jacobDeq;
+		// std::vector<Pair>		_vec;
+		// std::deque<Pair>		_deq; 
 	public:
 		PmergeMe();
 		PmergeMe(const PmergeMe &obj);
 		PmergeMe &operator=(const PmergeMe &obj);
 		~PmergeMe();
-		PmergeMe(int ac, char** av);
+		PmergeMe(char** av);
+		
 		void	printVec();
 		void	printDeq();
 		void	printJacob();
-		void	swap(size_t* a, size_t* b);
-		void	genJacobsthal();
-		void	mergeInset();
-		void	sort1(); // change the name after chosing both containers.
-		void	sort2(); // change the name after chosing both containers.
+		
+		void					jacobsthalVec();
+		void					insertVec(std::vector<size_t>& chain, std::vector<int> vec, size_t insertIdx, size_t bound);
+		std::vector<size_t>		fordJohnsonVec(std::vector<size_t> index, std::vector<int> vec);
+		// std::vector<int>		sortVec();
+		void					sortVec();
+		void					printResVec(std::vector<int> res);
+
+		void	jacobsthalDeq();
+		void	insertDeq();
+		void	fordJohnsonDeq();
+		void	sortDeq();
+		void					printResDeq(std::deque<int> res);
 };
 
 #endif
