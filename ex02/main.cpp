@@ -6,7 +6,7 @@
 /*   By: gaducurt <gaducurt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/10 11:19:12 by gaducurt          #+#    #+#             */
-/*   Updated: 2026/08/27 16:51:38 by gaducurt         ###   ########.fr       */
+/*   Updated: 2026/08/27 19:11:18 by gaducurt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ int	main(int ac, char** av)
 		try
 		{
 			PmergeMe	paul(av);
-			// paul.sortVec();
-			// paul.sortDeq();
 		}
 		catch (std::exception &e)
 		{

@@ -6,7 +6,7 @@
 /*   By: gaducurt <gaducurt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/10 11:19:19 by gaducurt          #+#    #+#             */
-/*   Updated: 2026/08/27 18:52:28 by gaducurt         ###   ########.fr       */
+/*   Updated: 2026/08/27 19:28:30 by gaducurt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <cctype>
+#include <climits>
 
 PmergeMe::PmergeMe(){}
 
@@ -34,8 +36,15 @@ PmergeMe::PmergeMe(char** av)
 {
 	std::vector<int>	vecInput;
 	std::deque<int>		deqInput;
+	
+	parser(av);
 	for (int i = 1; av[i]; i++)
 	{
+		long	nb = atol(av[i]);
+		if (nb > INT_MAX)
+			throw std::logic_error("Error: number too large");
+		else if (nb < INT_MIN)
+			throw std::logic_error("Error: number too small");
 		vecInput.push_back(atoi(av[i]));
 		deqInput.push_back(atoi(av[i]));
 	}
@@ -51,6 +60,18 @@ PmergeMe::PmergeMe(char** av)
 }
 
 PmergeMe::~PmergeMe(){}
+
+void	PmergeMe::parser(char** av)
+{
+	for (int i = 1; av[i]; i++)
+	{
+		for (int j = 0; av[i][j]; j++)
+		{
+			if (!std::isdigit(av[i][j]))
+				throw std::logic_error("Error: bad input");
+		}
+	}
+}
 
 /*---------VECTOR----------*/
 
