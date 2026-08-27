@@ -6,7 +6,7 @@
 /*   By: gaducurt <gaducurt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/10 11:19:19 by gaducurt          #+#    #+#             */
-/*   Updated: 2026/08/27 18:08:45 by gaducurt         ###   ########.fr       */
+/*   Updated: 2026/08/27 18:52:28 by gaducurt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,14 @@
 
 PmergeMe::PmergeMe(){}
 
-PmergeMe::PmergeMe(const PmergeMe &obj) : _timeVec(obj._timeVec), _timeDeq(obj._timeDeq){}
+PmergeMe::PmergeMe(const PmergeMe &obj) : _tVec(obj._tVec), _tDeq(obj._tDeq){}
 
 PmergeMe &PmergeMe::operator=(const PmergeMe &obj)
 {
 	if (this != &obj)
 	{
-		// _timeManagement = obj._timeManagement;
-		_timeVec = obj._timeVec;
-		_timeDeq = obj._timeDeq;
-		// _vecInput = obj._vecInput;
-		// _deqInput = obj._deqInput;
+		_tVec = obj._tVec;
+		_tDeq = obj._tDeq;
 	}
 	return *this;
 }
@@ -42,14 +39,15 @@ PmergeMe::PmergeMe(char** av)
 		vecInput.push_back(atoi(av[i]));
 		deqInput.push_back(atoi(av[i]));
 	}
-	// std::cout << "\n----------Vector----------\n\n_vec = ";
-	// printVec(vecInput);
-	// std::cout << "\n----------Deque----------\n\n_deq = ";
-	// printDeq(deqInput);
 	jacobsthalVec(vecInput);
 	jacobsthalDeq(deqInput);
 	sortVec(vecInput);
 	sortDeq(deqInput);
+	
+	_tVec = static_cast<double>(_tVec) / CLOCKS_PER_SEC * 1000000.0;
+	std::cout << "\nTime to process a range of 5 elements with std::vector : " << _tVec << " us" << std::endl;
+	_tDeq = static_cast<double>(_tDeq) / CLOCKS_PER_SEC * 1000000.0;
+	std::cout << "Time to process a range of 5 elements with std::deque : " << _tDeq << " us" << std::endl;
 }
 
 PmergeMe::~PmergeMe(){}
@@ -58,7 +56,6 @@ PmergeMe::~PmergeMe(){}
 
 void	PmergeMe::printVec(std::vector<int> vec)
 {
-	// std::cout << "\n----------Vector----------\n\n_vec = ";
 	for (size_t i = 0; i < vec.size(); i++)
 		std::cout << vec[i] << " ";
 	std::cout << std::endl;
@@ -79,7 +76,6 @@ void	PmergeMe::jacobsthalVec(std::vector<int> vec)
 
 	_jacobVec.push_back(0);
 	_jacobVec.push_back(1);
-	// std::cout << "_vec.size() = " << vec.size() << std::endl;
 	while (res < vec.size() / 2)
 	{
 		res = _jacobVec[i - 2] * 2 + _jacobVec[i - 1];
@@ -88,7 +84,6 @@ void	PmergeMe::jacobsthalVec(std::vector<int> vec)
 		_jacobVec.push_back(res);
 		i++;
 	}
-	// printJacobVec();
 }
 
 void	PmergeMe::insertVec(std::vector<size_t>& chain, std::vector<int> vec, size_t insertIdx, size_t bound)
@@ -193,6 +188,7 @@ std::vector<size_t>	PmergeMe::fordJohnsonVec(std::vector<size_t> index, std::vec
 
 void	PmergeMe::sortVec(std::vector<int> vec)
 {
+	_tVec = clock();
 	std::vector<size_t> index;
 	for (size_t i = 0; i < vec.size(); i++)
 		index.push_back(i);
@@ -201,6 +197,7 @@ void	PmergeMe::sortVec(std::vector<int> vec)
 	std::vector<int>	result;
 	for (size_t i = 0; i < sortedIndex.size(); i++)
 		result.push_back(vec[sortedIndex[i]]);
+	_tVec = clock() - _tVec;
 	std::cout << "\n----------Result std::vector----------\n" << std::endl;
 	printVec(result);
 }
@@ -237,7 +234,6 @@ void	PmergeMe::jacobsthalDeq(std::deque<int> deq)
 		_jacobDeq.push_back(res);
 		i++;
 	}
-	// printJacobDeq();
 }
 
 void	PmergeMe::insertDeq(std::deque<size_t>& chain, std::deque<int> deq, size_t insertIdx, size_t bound)
@@ -342,6 +338,7 @@ std::deque<size_t>	PmergeMe::fordJohnsonDeq(std::deque<size_t> index, std::deque
 
 void	PmergeMe::sortDeq(std::deque<int> deq)
 {
+	_tDeq = clock();
 	std::deque<size_t> index;
 	for (size_t i = 0; i < deq.size(); i++)
 		index.push_back(i);
@@ -350,6 +347,7 @@ void	PmergeMe::sortDeq(std::deque<int> deq)
 	std::deque<int>	result;
 	for (size_t i = 0; i < sortedIndex.size(); i++)
 		result.push_back(deq[sortedIndex[i]]);
+	_tDeq = clock() - _tDeq;
 	std::cout << "\n----------Result std::deque----------\n" << std::endl;
 	printDeq(result);
 }

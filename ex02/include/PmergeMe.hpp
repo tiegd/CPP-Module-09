@@ -6,7 +6,7 @@
 /*   By: gaducurt <gaducurt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/10 11:19:16 by gaducurt          #+#    #+#             */
-/*   Updated: 2026/08/27 18:08:01 by gaducurt         ###   ########.fr       */
+/*   Updated: 2026/08/27 18:23:50 by gaducurt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,14 @@
 #include <string>
 #include <vector>
 #include <deque>
+#include <ctime>
 
 class PmergeMe
 {
 	private:
 		// double				_timeManagement;
-		double				_timeVec;
-		double				_timeDeq;
+		clock_t				_tVec;
+		clock_t				_tDeq;
 		// std::vector<int>	_vecInput;
 		std::vector<int>	_vecResult;
 		std::vector<size_t>	_jacobVec;
