@@ -6,7 +6,7 @@
 /*   By: gaducurt <gaducurt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/06 15:11:11 by gaducurt          #+#    #+#             */
-/*   Updated: 2026/08/07 10:37:10 by gaducurt         ###   ########.fr       */
+/*   Updated: 2026/09/15 13:16:38 by gaducurt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,14 @@ void	Rpn::parser()
 			if (_input[i] != ' ')
 			{
 				if (_input[i] != '+' && _input[i] != '-' && _input[i] != '/' && _input[i] != '*')
-					throw std::logic_error("Error: not a digit or wrong operator: " + _input[i]);
+					throw std::logic_error("Error: not a digit or wrong operator: " + _input);
 				nbOp++;
 			}
 		}
 	}
-	if (nbDigit - 1 > nbOp)
+	if (_input.size() == 0)
+		throw std::logic_error("Error: string is empty");
+	else if (nbDigit - 1 > nbOp)
 		throw std::logic_error("Error: too many numbers: " + _input);
 	else if (nbDigit - 1 < nbOp)
 		throw std::logic_error("Error: too many operators: " + _input);

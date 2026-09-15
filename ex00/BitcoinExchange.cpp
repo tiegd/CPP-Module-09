@@ -6,7 +6,7 @@
 /*   By: gaducurt <gaducurt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/29 14:45:08 by gaducurt          #+#    #+#             */
-/*   Updated: 2026/08/07 10:33:24 by gaducurt         ###   ########.fr       */
+/*   Updated: 2026/09/15 13:47:14 by gaducurt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,9 +129,18 @@ void	BitcoinExchange::compute()
 bool	BitcoinExchange::checkDate(std::string date)
 {
 	struct std::tm	tm = {};
+	struct std::tm	min = {};
+	
 	strptime(date.c_str(), "%Y-%m-%d", &tm);
 	tm.tm_isdst = 0;
 	std::time_t	time = mktime(&tm);
+
+	strptime("2009-01-02", "%Y-%m-%d", &min);
+	min.tm_isdst = 0;
+	std::time_t minTime = mktime(&min);
+	if (time < minTime)
+		return false;
+	
 	char	buff[11];
 	std::strftime(buff, sizeof(buff), "%Y-%m-%d", &tm);
 	if (time == -1 || buff != date)
