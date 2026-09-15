@@ -6,7 +6,7 @@
 /*   By: gaducurt <gaducurt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/10 11:19:16 by gaducurt          #+#    #+#             */
-/*   Updated: 2026/08/27 19:05:06 by gaducurt         ###   ########.fr       */
+/*   Updated: 2026/08/31 09:57:48 by gaducurt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,11 @@ class PmergeMe
 		PmergeMe &operator=(const PmergeMe &obj);
 		PmergeMe(char** av);
 		~PmergeMe();
+
+		/*----------std::parsing----------*/
 		void					parser(char** av);
 		
+		/*----------std::vector----------*/
 		void					jacobsthalVec(std::vector<int> vec);
 		void					printJacobVec();
 		void					insertVec(std::vector<size_t>& chain, std::vector<int> vec, size_t insertIdx, size_t bound);
@@ -45,6 +48,7 @@ class PmergeMe
 		void					sortVec(std::vector<int> vec);
 		void					printVec(std::vector<int> vec);
 
+		/*----------std::deque----------*/
 		void					jacobsthalDeq(std::deque<int> deq);
 		void					printJacobDeq();
 		void					insertDeq(std::deque<size_t>& chain, std::deque<int> deq, size_t insertIdx, size_t bound);
