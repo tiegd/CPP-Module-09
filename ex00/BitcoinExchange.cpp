@@ -6,7 +6,7 @@
 /*   By: gaducurt <gaducurt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/29 14:45:08 by gaducurt          #+#    #+#             */
-/*   Updated: 2026/09/15 13:47:14 by gaducurt         ###   ########.fr       */
+/*   Updated: 2026/09/15 14:16:48 by gaducurt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ void	BitcoinExchange::fillDbMap()
 			std::stringstream	ss(line);
 			getline(ss, key, ',');
 			strptime(key.c_str(), "%Y-%m-%d", &tm);
+			if (i == 1)
+				_minDate = key;
 			tm.tm_isdst = 0;
 			std::time_t	time = mktime(&tm);
 			char buffer[11];
@@ -81,10 +83,12 @@ void	BitcoinExchange::fillDbMap()
 				throw std::logic_error("Error: bad input (data) => " + key);
 			getline(ss, val, ',');
 			_dbMap[key] = std::atof(val.c_str());
+			_maxDate = key;
 		}
 		i++;
 	}
 	db.close();
+	// std::cout << "max = " << _maxDate << "\nmin = " << _minDate << std::endl;
 }
 
 void	BitcoinExchange::compute()
@@ -130,17 +134,24 @@ bool	BitcoinExchange::checkDate(std::string date)
 {
 	struct std::tm	tm = {};
 	struct std::tm	min = {};
+	struct std::tm	max = {};
 	
 	strptime(date.c_str(), "%Y-%m-%d", &tm);
 	tm.tm_isdst = 0;
 	std::time_t	time = mktime(&tm);
 
-	strptime("2009-01-02", "%Y-%m-%d", &min);
+	strptime(_minDate.c_str(), "%Y-%m-%d", &min);
 	min.tm_isdst = 0;
 	std::time_t minTime = mktime(&min);
 	if (time < minTime)
 		return false;
-	
+
+	strptime(_maxDate.c_str(), "%Y-%m-%d", &max);
+	max.tm_isdst = 0;
+	std::time_t maxTime = mktime(&max);
+	if (time > maxTime)
+		return false;
+
 	char	buff[11];
 	std::strftime(buff, sizeof(buff), "%Y-%m-%d", &tm);
 	if (time == -1 || buff != date)
