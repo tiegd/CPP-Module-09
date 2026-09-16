@@ -6,7 +6,7 @@
 /*   By: gaducurt <gaducurt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/10 11:19:19 by gaducurt          #+#    #+#             */
-/*   Updated: 2026/08/27 19:28:30 by gaducurt         ###   ########.fr       */
+/*   Updated: 2026/09/16 17:44:04 by gaducurt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <algorithm>
 #include <cctype>
 #include <climits>
+#include <complex>
 
 PmergeMe::PmergeMe(){}
 
@@ -34,8 +35,8 @@ PmergeMe &PmergeMe::operator=(const PmergeMe &obj)
 
 PmergeMe::PmergeMe(char** av)
 {
-	std::vector<int>	vecInput;
-	std::deque<int>		deqInput;
+	// std::vector<int>	vecInput;
+	// std::deque<int>		deqInput;
 	
 	parser(av);
 	for (int i = 1; av[i]; i++)
@@ -45,18 +46,18 @@ PmergeMe::PmergeMe(char** av)
 			throw std::logic_error("Error: number too large");
 		else if (nb < INT_MIN)
 			throw std::logic_error("Error: number too small");
-		vecInput.push_back(atoi(av[i]));
-		deqInput.push_back(atoi(av[i]));
+		_vecInput.push_back(atoi(av[i]));
+		_deqInput.push_back(atoi(av[i]));
 	}
-	jacobsthalVec(vecInput);
-	jacobsthalDeq(deqInput);
-	sortVec(vecInput);
-	sortDeq(deqInput);
+	jacobsthalVec();
+	jacobsthalDeq();
+	sortVec();
+	// sortDeq();
 	
 	_tVec = static_cast<double>(_tVec) / CLOCKS_PER_SEC * 1000000.0;
 	std::cout << "\nTime to process a range of 5 elements with std::vector : " << _tVec << " us" << std::endl;
-	_tDeq = static_cast<double>(_tDeq) / CLOCKS_PER_SEC * 1000000.0;
-	std::cout << "Time to process a range of 5 elements with std::deque : " << _tDeq << " us" << std::endl;
+	// _tDeq = static_cast<double>(_tDeq) / CLOCKS_PER_SEC * 1000000.0;
+	// std::cout << "Time to process a range of 5 elements with std::deque : " << _tDeq << " us" << std::endl;
 }
 
 PmergeMe::~PmergeMe(){}
@@ -71,6 +72,13 @@ void	PmergeMe::parser(char** av)
 				throw std::logic_error("Error: bad input");
 		}
 	}
+}
+
+void	PmergeMe::swap(int &x, int &y)
+{
+	x ^= y;
+	y ^= x;
+	x ^= y;
 }
 
 /*---------VECTOR----------*/
@@ -90,137 +98,205 @@ void	PmergeMe::printJacobVec()
 	std::cout << std::endl;
 }
 
-void	PmergeMe::jacobsthalVec(std::vector<int> vec)
+void	PmergeMe::jacobsthalVec()
 {
 	size_t	res = 0;
 	int i = 2;
 
 	_jacobVec.push_back(0);
 	_jacobVec.push_back(1);
-	while (res < vec.size() / 2)
+	while (res < _vecInput.size()  >> 1)
 	{
-		res = _jacobVec[i - 2] * 2 + _jacobVec[i - 1];
-		if (res > vec.size() / 2)
+		res = (_jacobVec[i - 2] << 1) + _jacobVec[i - 1];
+		if (res > _vecInput.size() >> 1)
 			break;
 		_jacobVec.push_back(res);
 		i++;
 	}
 }
 
-void	PmergeMe::insertVec(std::vector<size_t>& chain, std::vector<int> vec, size_t insertIdx, size_t bound)
-{
-	size_t	lo = 0;
-	size_t	hi = bound;
-	int		value = vec[insertIdx];
+// void	PmergeMe::insertVec(std::vector<size_t>& chain, std::vector<int> vec, size_t insertIdx, size_t bound)
+// {
+// 	size_t	lo = 0;
+// 	size_t	hi = bound;
+// 	int		value = vec[insertIdx];
 	
-	while (lo < hi)
+// 	while (lo < hi)
+// 	{
+// 		size_t mid = lo + (hi - lo) / 2;
+// 		if (vec[chain[mid]] < value)
+// 			lo = mid + 1;
+// 		else
+// 			hi = mid;
+// 	}
+// 	chain.insert(chain.begin() + static_cast<long>(lo), insertIdx);
+// }
+
+// std::vector<size_t>	PmergeMe::fordJohnsonVec(std::vector<size_t> index, std::vector<int> vec)
+// {
+// 	size_t	n = index.size();
+// 	if (n <= 1)
+// 		return index;
+	
+// 	bool	hasStraggler = (n % 2 != 0);
+// 	size_t	straggler = 0;
+// 	if (hasStraggler)
+// 	{
+// 		straggler = index.back();
+// 		index.pop_back();
+// 	}
+
+// 	std::vector<size_t> leaders;
+// 	std::vector<size_t> followers;
+// 	for (size_t i = 0; i < index.size(); i += 2)
+// 	{
+// 		size_t a = index[i];
+// 		size_t b = index[i + 1];
+// 		if (vec[a] > vec[b])
+// 		{
+// 			leaders.push_back(a);
+// 			followers.push_back(b);
+// 		}
+// 		else
+// 		{
+// 			leaders.push_back(b);
+// 			followers.push_back(a);
+// 		}
+// 	}
+	
+// 	std::vector<size_t> sortedLeaders = fordJohnsonVec(leaders, vec);
+	
+// 	std::vector<size_t> followerOf(vec.size());
+// 	for (size_t i = 0; i < leaders.size(); i++)
+// 		followerOf[leaders[i]] = followers[i];
+	
+// 	std::vector<size_t> chain = sortedLeaders;
+	
+// 	size_t b1 = followerOf[sortedLeaders[0]];
+// 	chain.insert(chain.begin(), b1);
+
+// 	size_t m = sortedLeaders.size();
+
+// 	for (size_t k = 2; k < _jacobVec.size(); ++k)
+// 	{
+// 		size_t hi = std::min(_jacobVec[k], m);
+// 		size_t lo = _jacobVec[k - 1] + 1;
+// 		if (lo > hi)
+// 			continue;
+// 		for (size_t t = hi; t >= lo; --t)
+// 		{swap 
+// 			size_t leadrtIdx = sortedLeaders[t - 1];
+// 			size_t followerIdx = followerOf[leadrtIdx];
+			
+// 			std::vector<size_t>::iterator it = std::find(chain.begin(), chain.end(), leadrtIdx);
+// 			size_t bound = static_cast<size_t>(it - chain.begin());
+			
+// 			insertVec(chain, vec, followerIdx, bound);
+// 			if (t == lo)
+// 				break;
+// 		}
+// 	}
+
+// 	if (hasStraggler)
+// 	{
+// 		size_t	lo2 = 0;
+// 		size_t	hi2 = chain.size();
+// 		int		sval = vec[straggler];
+// 		while (lo2 < hi2)
+// 		{
+// 			size_t mid = lo2 + (hi2 - lo2) / 2;
+// 			if (vec[chain[mid]] < sval)
+// 				lo2 = mid + 1;
+// 			else
+// 				hi2 = mid;
+// 		}
+// 		chain.insert(chain.begin() + static_cast<long>(lo2), straggler);
+// 	}
+// 	return chain;
+// }
+
+void	PmergeMe::printDoubleVec(std::vector<std::vector<int> > vec)
+{
+	for (size_t i = 0; i < vec.size(); i++)
 	{
-		size_t mid = lo + (hi - lo) / 2;
-		if (vec[chain[mid]] < value)
-			lo = mid + 1;
-		else
-			hi = mid;
+		std::cout << "[ ";
+		for (size_t j = 0; j < vec[i].size(); j++)
+			std::cout << vec[i][j] << " ";
+		std::cout << "] ";
+		// std::cout << "vec[" << i << "][0] = " << vec[i][0] << "\nvec[" << i << "][1] = " << vec[i][1] << std::endl;
 	}
-	chain.insert(chain.begin() + static_cast<long>(lo), insertIdx);
+	if (_hasStraggler)
+		std::cout << _straggler;
+	std::cout << std::endl;
 }
 
-std::vector<size_t>	PmergeMe::fordJohnsonVec(std::vector<size_t> index, std::vector<int> vec)
+// void	PmergeMe::swapVec(std::vector<int> &v1, std::vector<int> &v2)
+// {
+// 	std::vector<int> tmp;
+	
+// 	tmp = v1;
+// 	v1 = v2;
+// 	v2 = tmp;
+// }
+
+void	PmergeMe::fordJohnsonVec(std::vector<std::vector<int> > vec, int u)
 {
-	size_t	n = index.size();
-	if (n <= 1)
-		return index;
-	
-	bool	hasStraggler = (n % 2 != 0);
-	size_t	straggler = 0;
-	if (hasStraggler)
-	{
-		straggler = index.back();
-		index.pop_back();
-	}
-	
-	std::vector<size_t> leaders;
-	std::vector<size_t> followers;
-	for (size_t i = 0; i < index.size(); i += 2)
-	{
-		size_t a = index[i];
-		size_t b = index[i + 1];
-		if (vec[a] > vec[b])
-		{
-			leaders.push_back(a);
-			followers.push_back(b);
-		}
-		else
-		{
-			leaders.push_back(b);
-			followers.push_back(a);
-		}
-	}
-	
-	std::vector<size_t> sortedLeaders = fordJohnsonVec(leaders, vec);
-	
-	std::vector<size_t> followerOf(vec.size());
-	for (size_t i = 0; i < leaders.size(); i++)
-		followerOf[leaders[i]] = followers[i];
-	
-	std::vector<size_t> chain = sortedLeaders;
-	
-	size_t b1 = followerOf[sortedLeaders[0]];
-	chain.insert(chain.begin(), b1);
+	std::vector<std::vector<int> >	tmpVec;
 
-	size_t m = sortedLeaders.size();
-
-	for (size_t k = 2; k < _jacobVec.size(); ++k)
+	while ((std::size_t)pow(2, u) < _vecInput.size())
 	{
-		size_t hi = std::min(_jacobVec[k], m);
-		size_t lo = _jacobVec[k - 1] + 1;
-		if (lo > hi)
-			continue;
-		for (size_t t = hi; t >= lo; --t)
+		// if (straggler)
+		// bool	hasStrag = vec.size() % 2 != 0;
+		size_t add = 0;
+		if (vec.size() % 2 != 0)
+			add = 1;
+		std::cout << "u = " << u << std::endl;
+		for (size_t i = 0; i < vec.size() - add; i+=2)
 		{
-			size_t leadrtIdx = sortedLeaders[t - 1];
-			size_t followerIdx = followerOf[leadrtIdx];
-			
-			std::vector<size_t>::iterator it = std::find(chain.begin(), chain.end(), leadrtIdx);
-			size_t bound = static_cast<size_t>(it - chain.begin());
-			
-			insertVec(chain, vec, followerIdx, bound);
-			if (t == lo)
-				break;
+			if (vec[i][vec[i].size() - 1] > vec[i+1][vec[i].size() - 1])
+				vec[i].swap(vec[i+1]);
 		}
+		
+		u++;
+		printDoubleVec(vec);
 	}
-
-	if (hasStraggler)
-	{
-		size_t	lo2 = 0;
-		size_t	hi2 = chain.size();
-		int		sval = vec[straggler];
-		while (lo2 < hi2)
-		{
-			size_t mid = lo2 + (hi2 - lo2) / 2;
-			if (vec[chain[mid]] < sval)
-				lo2 = mid + 1;
-			else
-				hi2 = mid;
-		}
-		chain.insert(chain.begin() + static_cast<long>(lo2), straggler);
-	}
-	return chain;
+	// std::vector<int>	res = cpRes(tmpVec);
+	// return res;
+	// return;
 }
 
-void	PmergeMe::sortVec(std::vector<int> vec)
+void	PmergeMe::sortVec()
 {
 	_tVec = clock();
-	std::vector<size_t> index;
-	for (size_t i = 0; i < vec.size(); i++)
-		index.push_back(i);
+	std::vector<std::vector<int> > vec;
 
-	std::vector<size_t>	sortedIndex = fordJohnsonVec(index, vec);
-	std::vector<int>	result;
-	for (size_t i = 0; i < sortedIndex.size(); i++)
-		result.push_back(vec[sortedIndex[i]]);
+	// std::vector<size_t> index;
+	_hasStraggler = _vecInput.size() % 2 != 0;
+	_straggler = _vecInput[_vecInput.size() - 1];
+	for (size_t i = 0; i < _vecInput.size(); i += 2)
+	{
+		if (i == _vecInput.size() - 1 && _hasStraggler)
+			break;
+		std::vector<int>	tmp;
+		tmp.push_back(_vecInput[i]);
+		tmp.push_back(_vecInput[i + 1]);
+		printVec(tmp);
+		if (tmp[0] > tmp[1])
+			swap(tmp[0], tmp[1]);
+		printVec(tmp);
+		vec.push_back(tmp);
+	}
+	printDoubleVec(vec);
+	// index.push_back(i);
+	
+	fordJohnsonVec(vec, 2);
+	// std::vector<size_t>	sortedIndex = fordJohnsonVec(index, vec);
+	// std::vector<int>	result;
+	// for (size_t i = 0; i < sortedIndex.size(); i++)
+	// 	result.push_back(vec[sortedIndex[i]]);
 	_tVec = clock() - _tVec;
 	std::cout << "\n----------Result std::vector----------\n" << std::endl;
-	printVec(result);
+	// printVec(result);
 }
 
 /*---------DEQUE----------*/
@@ -240,135 +316,150 @@ void	PmergeMe::printJacobDeq()
 	std::cout << std::endl;
 }
 
-void	PmergeMe::jacobsthalDeq(std::deque<int> deq)
+void	PmergeMe::jacobsthalDeq()
 {
 	size_t	res = 0;
 	int i = 2;
 
 	_jacobDeq.push_back(0);
 	_jacobDeq.push_back(1);
-	while (res < deq.size() / 2)
+	while (res < _deqInput.size() >> 1)
 	{
-		res = _jacobDeq[i - 2] * 2 + _jacobDeq[i - 1];
-		if (res > deq.size() / 2)
+		res = (_jacobDeq[i - 2] << 1) + _jacobDeq[i - 1];
+		if (res > _deqInput.size() >> 1)
 			break;
 		_jacobDeq.push_back(res);
 		i++;
 	}
 }
 
-void	PmergeMe::insertDeq(std::deque<size_t>& chain, std::deque<int> deq, size_t insertIdx, size_t bound)
-{
-	size_t	lo = 0;
-	size_t	hi = bound;
-	int		value = deq[insertIdx];
+// void	PmergeMe::insertDeq(std::deque<size_t>& chain, std::deque<int> deq, size_t insertIdx, size_t bound)
+// {
+// 	size_t	lo = 0;
+// 	size_t	hi = bound;
+// 	int		value = deq[insertIdx];
 	
-	while (lo < hi)
-	{
-		size_t mid = lo + (hi - lo) / 2;
-		if (deq[chain[mid]] < value)
-			lo = mid + 1;
-		else
-			hi = mid;
-	}
-	chain.insert(chain.begin() + static_cast<long>(lo), insertIdx);
-}
+// 	while (lo < hi)
+// 	{
+// 		size_t mid = lo + (hi - lo) / 2;
+// 		if (deq[chain[mid]] < value)
+// 			lo = mid + 1;
+// 		else
+// 			hi = mid;
+// 	}
+// 	chain.insert(chain.begin() + static_cast<long>(lo), insertIdx);
+// }
 
-std::deque<size_t>	PmergeMe::fordJohnsonDeq(std::deque<size_t> index, std::deque<int> deq)
-{
-	size_t	n = index.size();
-	if (n <= 1)
-		return index;
-	
-	bool	hasStraggler = (n % 2 != 0);
-	size_t	straggler = 0;
-	if (hasStraggler)
-	{
-		straggler = index.back();
-		index.pop_back();
-	}
-	
-	std::deque<size_t> leaders;
-	std::deque<size_t> followers;
-	for (size_t i = 0; i < index.size(); i += 2)
-	{
-		size_t a = index[i];
-		size_t b = index[i + 1];
-		if (deq[a] > deq[b])
-		{
-			leaders.push_back(a);
-			followers.push_back(b);
-		}
-		else
-		{
-			leaders.push_back(b);
-			followers.push_back(a);
-		}
-	}
-	
-	std::deque<size_t> sortedLeaders = fordJohnsonDeq(leaders, deq);
-	
-	std::deque<size_t> followerOf(deq.size());
-	for (size_t i = 0; i < leaders.size(); i++)
-		followerOf[leaders[i]] = followers[i];
-	
-	std::deque<size_t> chain = sortedLeaders;
-	
-	size_t b1 = followerOf[sortedLeaders[0]];
-	chain.insert(chain.begin(), b1);
+// std::deque<size_t>	PmergeMe::fordJohnsonDeq(std::deque<size_t> index, std::deque<int> deq)
+// {
+// 	size_t	n = index.size();
+// 	if (n <= 1)
+// 		return index;
+// void	PmergeMe::sortDeq(std::deque<int> deq)
+// {
+// 	_tDeq = clock();
+// 	std::deque<size_t> index;
+// 	for (size_t i = 0; i < deq.size(); i++)
+// 		index.push_back(i);
 
-	size_t m = sortedLeaders.size();
+// 	std::deque<size_t>	sortedIndex = fordJohnsonDeq(index, deq);
+// 	std::deque<int>	result;
+// 	for (size_t i = 0; i < sortedIndex.size(); i++)
+// 		result.push_back(deq[sortedIndex[i]]);
+// 	_tDeq = clock() - _tDeq;
+// 	std::cout << "\n----------Result std::deque----------\n" << std::endl;
+// 	printDeq(result);
+// }
+	
+// 	bool	hasStraggler = (n % 2 != 0);
+// 	size_t	straggler = 0;
+// 	if (hasStraggler)
+// 	{
+// 		straggler = index.back();
+// 		index.pop_back();
+// 	}
+	
+// 	std::deque<size_t> leaders;
+// 	std::deque<size_t> followers;
+// 	for (size_t i = 0; i < index.size(); i += 2)
+// 	{
+// 		size_t a = index[i];
+// 		size_t b = index[i + 1];
+// 		if (deq[a] > deq[b])
+// 		{
+// 			leaders.push_back(a);
+// 			followers.push_back(b);
+// 		}
+// 		else
+// 		{
+// 			leaders.push_back(b);
+// 			followers.push_back(a);
+// 		}
+// 	}
+	
+// 	std::deque<size_t> sortedLeaders = fordJohnsonDeq(leaders, deq);
+	
+// 	std::deque<size_t> followerOf(deq.size());
+// 	for (size_t i = 0; i < leaders.size(); i++)
+// 		followerOf[leaders[i]] = followers[i];
+	
+// 	std::deque<size_t> chain = sortedLeaders;
+	
+// 	size_t b1 = followerOf[sortedLeaders[0]];
+// 	chain.insert(chain.begin(), b1);
 
-	for (size_t k = 2; k < _jacobDeq.size(); ++k)
-	{
-		size_t hi = std::min(_jacobDeq[k], m);
-		size_t lo = _jacobDeq[k - 1] + 1;
-		if (lo > hi)
-			continue;
-		for (size_t t = hi; t >= lo; --t)
-		{
-			size_t leadrtIdx = sortedLeaders[t - 1];
-			size_t followerIdx = followerOf[leadrtIdx];
+// 	size_t m = sortedLeaders.size();
+
+// 	for (size_t k = 2; k < _jacobDeq.size(); ++k)
+// 	{
+// 		size_t hi = std::min(_jacobDeq[k], m);
+// 		size_t lo = _jacobDeq[k - 1] + 1;
+// 		if (lo > hi)
+// 			continue;
+// 		for (size_t t = hi; t >= lo; --t)
+// 		{
+// 			size_t leadrtIdx = sortedLeaders[t - 1];
+// 			size_t followerIdx = followerOf[leadrtIdx];
 			
-			std::deque<size_t>::iterator it = std::find(chain.begin(), chain.end(), leadrtIdx);
-			size_t bound = static_cast<size_t>(it - chain.begin());
+// 			std::deque<size_t>::iterator it = std::find(chain.begin(), chain.end(), leadrtIdx);
+// 			size_t bound = static_cast<size_t>(it - chain.begin());
 			
-			insertDeq(chain, deq, followerIdx, bound);
-			if (t == lo)
-				break;
-		}
-	}
+// 			insertDeq(chain, deq, followerIdx, bound);
+// 			if (t == lo)
+// 				break;
+// 		}
+// 	}
 
-	if (hasStraggler)
-	{
-		size_t	lo2 = 0;
-		size_t	hi2 = chain.size();
-		int		sval = deq[straggler];
-		while (lo2 < hi2)
-		{
-			size_t mid = lo2 + (hi2 - lo2) / 2;
-			if (deq[chain[mid]] < sval)
-				lo2 = mid + 1;
-			else
-				hi2 = mid;
-		}
-		chain.insert(chain.begin() + static_cast<long>(lo2), straggler);
-	}
-	return chain;
-}
+// 	if (hasStraggler)
+// 	{
+// 		size_t	lo2 = 0;
+// 		size_t	hi2 = chain.size();
+// 		int		sval = deq[straggler];
+// 		while (lo2 < hi2)
+// 		{
+// 			size_t mid = lo2 + (hi2 - lo2) / 2;
+// 			if (deq[chain[mid]] < sval)
+// 				lo2 = mid + 1;
+// 			else
+// 				hi2 = mid;
+// 		}
+// 		chain.insert(chain.begin() + static_cast<long>(lo2), straggler);
+// 	}
+// 	return chain;
+// }
 
-void	PmergeMe::sortDeq(std::deque<int> deq)
-{
-	_tDeq = clock();
-	std::deque<size_t> index;
-	for (size_t i = 0; i < deq.size(); i++)
-		index.push_back(i);
+// void	PmergeMe::sortDeq(std::deque<int> deq)
+// {
+// 	_tDeq = clock();
+// 	std::deque<size_t> index;
+// 	for (size_t i = 0; i < deq.size(); i++)
+// 		index.push_back(i);
 
-	std::deque<size_t>	sortedIndex = fordJohnsonDeq(index, deq);
-	std::deque<int>	result;
-	for (size_t i = 0; i < sortedIndex.size(); i++)
-		result.push_back(deq[sortedIndex[i]]);
-	_tDeq = clock() - _tDeq;
-	std::cout << "\n----------Result std::deque----------\n" << std::endl;
-	printDeq(result);
-}
+// 	std::deque<size_t>	sortedIndex = fordJohnsonDeq(index, deq);
+// 	std::deque<int>	result;
+// 	for (size_t i = 0; i < sortedIndex.size(); i++)
+// 		result.push_back(deq[sortedIndex[i]]);
+// 	_tDeq = clock() - _tDeq;
+// 	std::cout << "\n----------Result std::deque----------\n" << std::endl;
+// 	printDeq(result);
+// }
