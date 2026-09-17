@@ -6,7 +6,7 @@
 /*   By: gaducurt <gaducurt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/10 11:19:19 by gaducurt          #+#    #+#             */
-/*   Updated: 2026/09/17 17:18:50 by gaducurt         ###   ########.fr       */
+/*   Updated: 2026/09/17 18:23:06 by gaducurt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,6 @@ void	PmergeMe::printDoubleVec(std::vector<std::vector<int> > vec)
 		for (size_t j = 0; j < vec[i].size(); j++)
 			std::cout << vec[i][j] << " ";
 		std::cout << "] ";
-		// std::cout << "vec[" << i << "][0] = " << vec[i][0] << "\nvec[" << i << "][1] = " << vec[i][1] << std::endl;
 	}
 	if (_hasStraggler)
 		std::cout << _straggler;
@@ -132,14 +131,19 @@ void	PmergeMe::printDoubleVec(std::vector<std::vector<int> > vec)
 
 void	PmergeMe::fillTmp1(std::vector<std::vector<int> > vec)
 {
-	// int index = 0;
 	_vecTmp.clear();
 	for (size_t i = 0; i < vec.size(); i++)
 	{
+		std::cout << "[ ";
 		for (size_t j = 0; j < vec[i].size(); j++)
+		{
 			_vecTmp.push_back(vec[i][j]);
+			std::cout << GREEN << vec[i][j] << " " << RESET;
+		}
+		std::cout << "] ";
 	}
 	_vecTmp.push_back(_straggler);
+	std::cout << RED << _straggler << RESET << std::endl;
 }
 
 void	PmergeMe::fillTmp2(std::vector<std::vector<int> > vec)
@@ -147,19 +151,26 @@ void	PmergeMe::fillTmp2(std::vector<std::vector<int> > vec)
 	_vecTmp.clear();
 	for (size_t i = 0; i < vec.size(); i++)
 	{
+		std::cout << "[ ";
 		for (size_t j = 0; j < vec[i].size(); j++)
+		{
 			_vecTmp.push_back(vec[i][j]);
+			std::cout << GREEN << vec[i][j] << " " << RESET;
+		}
+		std::cout << "] ";
 	}
 	for (size_t i = 0; i < _vecStraggler.size(); i++)
+	{
 		_vecTmp.push_back(_vecStraggler[i]);
+		std::cout << YELLOW << _vecStraggler[i] << " " << RESET;
+	}
+	std::cout << std::endl;
 }
 
 void	PmergeMe::fordJohnsonVec(int u)
 {
 	std::vector<std::vector<int> >	vec;
 
-	// while ((std::size_t)pow(2, u) < _vecInput.size())
-	// {
 	if ((std::size_t)pow(2, u) >= _vecInput.size())
 		return ;
 	size_t	index = 0;
@@ -196,7 +207,6 @@ void	PmergeMe::fordJohnsonVec(int u)
 	_vecStraggler.clear();
 	printVec(_vecTmp);
 	std::cout << std::endl;
-	// printDoubleVec(vec);
 	fordJohnsonVec(u);
 }
 
