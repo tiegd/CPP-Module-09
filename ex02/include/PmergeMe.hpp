@@ -6,7 +6,7 @@
 /*   By: gaducurt <gaducurt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/10 11:19:16 by gaducurt          #+#    #+#             */
-/*   Updated: 2026/09/16 17:31:21 by gaducurt         ###   ########.fr       */
+/*   Updated: 2026/09/17 16:22:56 by gaducurt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,12 @@ class PmergeMe
 		clock_t				_tDeq;
 		bool				_hasStraggler;
 		int					_straggler;
+		std::vector<int>	_vecStraggler;
 
 		std::vector<int>	_vecResult;
 		std::vector<int>	_vecInput;
+		std::vector<int>	_vecTmp;
+		std::vector<int>	_rest;
 		std::vector<size_t>	_jacobVec;
 
 		std::deque<int>		_deqResult;
@@ -47,14 +50,17 @@ class PmergeMe
 		void							parser(char** av);
 		
 		/*----------std::vector----------*/
-		void					jacobsthalVec();
-		void					printJacobVec();
-		void					insertVec(std::vector<size_t>& chain, std::vector<int> vec, size_t insertIdx, size_t bound);
+		void							jacobsthalVec();
+		void							printJacobVec();
+		void							insertVec(std::vector<size_t>& chain, std::vector<int> vec, size_t insertIdx, size_t bound);
 		// std::vector<size_t>	fordJohnsonVec(std::vector<size_t> index, std::vector<int> vec);
-		void					fordJohnsonVec(std::vector<std::vector<int> > vec, int u);
-		void					sortVec();
-		void					printVec(std::vector<int> vec);
-		void					printDoubleVec(std::vector<std::vector<int> > vec);
+		void							fordJohnsonVec(int u);
+		void							sortVec();
+		void							printVec(std::vector<int> vec);
+		void							printDoubleVec(std::vector<std::vector<int> > vec);
+		void							cpVec(std::vector<std::vector<int> > vec);
+		void							fillTmp1(std::vector<std::vector<int> > vec);
+		void							fillTmp2(std::vector<std::vector<int> > vec);
 		// void					swapVec(std::vector<int> &v1, std::vector<int> &v2);
 		/*----------std::deque----------*/
 		void							jacobsthalDeq();
