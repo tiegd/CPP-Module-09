@@ -6,7 +6,7 @@
 /*   By: gaducurt <gaducurt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/10 11:19:16 by gaducurt          #+#    #+#             */
-/*   Updated: 2026/09/17 18:14:23 by gaducurt         ###   ########.fr       */
+/*   Updated: 2026/09/22 12:49:34 by gaducurt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ class PmergeMe
 	private:
 		clock_t				_tVec;
 		clock_t				_tDeq;
+		int					_u;
 		bool				_hasStraggler;
 		int					_straggler;
 		std::vector<int>	_vecStraggler;
@@ -53,15 +54,15 @@ class PmergeMe
 		void							jacobsthalVec();
 		void							printJacobVec();
 		void							insertVec(std::vector<size_t>& chain, std::vector<int> vec, size_t insertIdx, size_t bound);
-		// std::vector<size_t>	fordJohnsonVec(std::vector<size_t> index, std::vector<int> vec);
-		void							fordJohnsonVec(int u);
+		void							fordJohnsonVec();
 		void							sortVec();
 		void							printVec(std::vector<int> vec);
 		void							printDoubleVec(std::vector<std::vector<int> > vec);
 		void							cpVec(std::vector<std::vector<int> > vec);
 		void							fillTmp1(std::vector<std::vector<int> > vec);
 		void							fillTmp2(std::vector<std::vector<int> > vec);
-		// void					swapVec(std::vector<int> &v1, std::vector<int> &v2);
+		void							binInsert();
+
 		/*----------std::deque----------*/
 		void							jacobsthalDeq();
 		void							printJacobDeq();
