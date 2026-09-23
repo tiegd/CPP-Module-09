@@ -6,7 +6,7 @@
 /*   By: gaducurt <gaducurt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/10 11:19:16 by gaducurt          #+#    #+#             */
-/*   Updated: 2026/09/23 13:43:26 by gaducurt         ###   ########.fr       */
+/*   Updated: 2026/09/23 18:33:18 by gaducurt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ class PmergeMe
 		bool				_hasStraggler;
 		size_t				_straggler;
 		std::vector<size_t>	_vecStraggler;
+		std::vector<std::vector<size_t> >	_main;
 
 		std::vector<size_t>	_vecResult;
 		std::vector<size_t>	_vecInput;
