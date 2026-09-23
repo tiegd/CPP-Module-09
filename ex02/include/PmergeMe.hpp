@@ -6,7 +6,7 @@
 /*   By: gaducurt <gaducurt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/10 11:19:16 by gaducurt          #+#    #+#             */
-/*   Updated: 2026/09/22 12:49:34 by gaducurt         ###   ########.fr       */
+/*   Updated: 2026/09/23 13:43:26 by gaducurt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,17 @@ class PmergeMe
 		clock_t				_tDeq;
 		int					_u;
 		bool				_hasStraggler;
-		int					_straggler;
-		std::vector<int>	_vecStraggler;
+		size_t				_straggler;
+		std::vector<size_t>	_vecStraggler;
 
-		std::vector<int>	_vecResult;
-		std::vector<int>	_vecInput;
-		std::vector<int>	_vecTmp;
-		std::vector<int>	_rest;
+		std::vector<size_t>	_vecResult;
+		std::vector<size_t>	_vecInput;
+		std::vector<size_t>	_vecTmp;
+		std::vector<size_t>	_rest;
 		std::vector<size_t>	_jacobVec;
 
-		std::deque<int>		_deqResult;
-		std::deque<int>		_deqInput;
+		std::deque<size_t>		_deqResult;
+		std::deque<size_t>		_deqInput;
 		std::deque<size_t>	_jacobDeq;
 
 	public:
@@ -45,7 +45,7 @@ class PmergeMe
 		PmergeMe(char** av);
 		~PmergeMe();
 		
-		void							swap(int &x, int &y);
+		void							swap(size_t &x, size_t &y);
 
 		/*----------std::parsing----------*/
 		void							parser(char** av);
@@ -53,14 +53,14 @@ class PmergeMe
 		/*----------std::vector----------*/
 		void							jacobsthalVec();
 		void							printJacobVec();
-		void							insertVec(std::vector<size_t>& chain, std::vector<int> vec, size_t insertIdx, size_t bound);
+		// void							insertVec(std::vector<size_t>& chain, std::vector<int> vec, size_t insertIdx, size_t bound);
 		void							fordJohnsonVec();
 		void							sortVec();
-		void							printVec(std::vector<int> vec);
-		void							printDoubleVec(std::vector<std::vector<int> > vec);
-		void							cpVec(std::vector<std::vector<int> > vec);
-		void							fillTmp1(std::vector<std::vector<int> > vec);
-		void							fillTmp2(std::vector<std::vector<int> > vec);
+		void							printVec(std::vector<size_t> vec);
+		void							printDoubleVec(std::vector<std::vector<size_t> > vec);
+		void							cpVec(std::vector<std::vector<size_t> > vec);
+		void							fillTmp1(std::vector<std::vector<size_t> > vec);
+		void							fillTmp2(std::vector<std::vector<size_t> > vec);
 		void							binInsert();
 
 		/*----------std::deque----------*/

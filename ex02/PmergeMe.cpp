@@ -6,7 +6,7 @@
 /*   By: gaducurt <gaducurt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/10 11:19:19 by gaducurt          #+#    #+#             */
-/*   Updated: 2026/09/22 16:03:02 by gaducurt         ###   ########.fr       */
+/*   Updated: 2026/09/23 15:56:42 by gaducurt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,14 @@
 #include <cctype>
 #include <climits>
 #include <complex>
+
+struct	CmpLast
+{
+	bool operator()(const std::vector<size_t>& a, const std::vector<size_t>& b) const
+	{
+		return a.back() < b.back();
+	}
+};
 
 PmergeMe::PmergeMe(){}
 
@@ -74,7 +82,7 @@ void	PmergeMe::parser(char** av)
 	}
 }
 
-void	PmergeMe::swap(int &x, int &y)
+void	PmergeMe::swap(size_t &x, size_t &y)
 {
 	x ^= y;
 	y ^= x;
@@ -83,7 +91,7 @@ void	PmergeMe::swap(int &x, int &y)
 
 /*---------VECTOR----------*/
 
-void	PmergeMe::printVec(std::vector<int> vec)
+void	PmergeMe::printVec(std::vector<size_t> vec)
 {
 	for (size_t i = 0; i < vec.size(); i++)
 		std::cout << vec[i] << " ";
@@ -103,9 +111,11 @@ void	PmergeMe::jacobsthalVec()
 	size_t	res = 0;
 	int i = 2;
 
-	_jacobVec.push_back(0);
-	_jacobVec.push_back(1);
-	while (res < _vecInput.size()  >> 1)
+	// _jacobVec.push_back(0);
+	// _jacobVec.push_back(1);
+	_jacobVec.push_back(3);
+	_jacobVec.push_back(5);
+	while (res < _vecInput.size() >> 1)
 	{
 		res = (_jacobVec[i - 2] << 1) + _jacobVec[i - 1];
 		if (res > _vecInput.size() >> 1)
@@ -113,9 +123,10 @@ void	PmergeMe::jacobsthalVec()
 		_jacobVec.push_back(res);
 		i++;
 	}
+	printVec(_jacobVec);
 }
 
-void	PmergeMe::printDoubleVec(std::vector<std::vector<int> > vec)
+void	PmergeMe::printDoubleVec(std::vector<std::vector<size_t> > vec)
 {
 	for (size_t i = 0; i < vec.size(); i++)
 	{
@@ -129,7 +140,7 @@ void	PmergeMe::printDoubleVec(std::vector<std::vector<int> > vec)
 	std::cout << "\n" << std::endl;
 }
 
-void	PmergeMe::fillTmp1(std::vector<std::vector<int> > vec)
+void	PmergeMe::fillTmp1(std::vector<std::vector<size_t> > vec)
 {
 	_vecTmp.clear();
 	for (size_t i = 0; i < vec.size(); i++)
@@ -146,7 +157,7 @@ void	PmergeMe::fillTmp1(std::vector<std::vector<int> > vec)
 	std::cout << RED << _straggler << RESET << std::endl;
 }
 
-void	PmergeMe::fillTmp2(std::vector<std::vector<int> > vec)
+void	PmergeMe::fillTmp2(std::vector<std::vector<size_t> > vec)
 {
 	// std::cout << "vectmp before clear" << std::endl;
 	// printVec(_vecTmp);
@@ -181,7 +192,7 @@ void	PmergeMe::binInsert()
 // void	PmergeMe::fordJohnsonVec(int u)
 void	PmergeMe::fordJohnsonVec()
 {
-	std::vector<std::vector<int> >	main;
+	std::vector<std::vector<size_t> >	main;
 
 	if ((std::size_t)pow(2, _u) >= _vecInput.size())
 		return ;
@@ -189,7 +200,7 @@ void	PmergeMe::fordJohnsonVec()
 	size_t add = 0;
 	std::cout << BLUE << "u = " << _u << RESET << std::endl;
 
-	std::vector<int>	tmp;
+	std::vector<size_t>	tmp;
 	for (size_t i = 0; i < _vecTmp.size(); i++)
 	{
 		tmp.clear();
@@ -221,12 +232,14 @@ void	PmergeMe::fordJohnsonVec()
 	printVec(_vecTmp);
 	std::cout << std::endl;
 	fordJohnsonVec();
+	std::cout << BLUE << "u = " << _u << RESET << std::endl;
 	_u--;
 	// printVec(_vecTmp);
-	std::vector<std::vector<int> >	pend;
+	std::vector<std::vector<size_t> >	pend;
 	// std::vector<std::vector<int> >	main;
-	std::vector<std::vector<int> >::iterator it;
+	std::vector<std::vector<size_t> >::iterator it;
 	// for (size_t i = 2; i < main.size(); i++)
+	size_t size = main.size();
 	for (it = main.begin() + 2; it < main.end(); it+=2)
 	{
 		// pend.push_back(main[i]);
@@ -234,9 +247,65 @@ void	PmergeMe::fordJohnsonVec()
 		main.erase(it);
 		// main.erase((std::vector<std::vector<int> >::iterator)i);
 	}
+	// std::cout << "size = " << main.size() << std::endl;
+	if (size % 2 != 0 && size != 1)
+	{
+		pend.push_back(main.back());
+		main.erase(main.end());
+	}
+	std::cout << "--------------------" << std::endl;
 	std::cout << "pend = ";
 	printDoubleVec(pend);
 	std::cout << "\nmain = ";
+	printDoubleVec(main);
+	// size_t iJac = _jacobVec[0];
+	// for (size_t i = 0; i < pend.size(); i++)
+	size_t	pos = 0;
+	// int	bInsert = 1;
+	std::cout << "pend.size() = " << pend.size() << std::endl;
+	for (size_t i = 0; i < pend.size(); i++)
+	{
+		if (pos == 0)
+		{
+			std::cout << "coucou" << std::endl;
+			for (int jac = (int)_jacobVec[pos] - 1; jac >= 0; jac-- && i++)
+			{
+				std::cout << "jac = " << jac << "\ni = " << i << std::endl;
+				if (jac >= (int)pend.size())
+					while (jac >= (int)pend.size())
+						jac--;
+				std::cout << "jac = " << jac << std::endl;
+				std::vector<std::vector<size_t> >::iterator it = std::lower_bound(main.begin(), main.end(), pend[jac], CmpLast());
+				main.insert(it, pend[jac]);
+				// i++;
+			}
+			std::cout << "jweber" << std::endl;
+			// pos++;
+		}
+		else
+		{
+			for (size_t jac = _jacobVec[pos] - 1; jac >= _jacobVec[pos] - 1; jac-- && i++)
+			{
+				std::cout << "yoooooooooo" << std::endl;
+				std::cout << "jac = " << jac << std::endl;
+				if (jac > pend.size())
+					while (jac >= pend.size())
+						jac--;
+				std::cout << "jac = " << jac << std::endl;
+				std::vector<std::vector<size_t> >::iterator it = std::lower_bound(main.begin(), main.end(), pend[jac], CmpLast());
+				printVec(pend[jac]);
+				main.insert(it, pend[jac]);
+				// bInsert++;
+				// i++;
+				// std::cout << "j = " << j << std::endl;
+				// std::cout << "loop" << std::endl;
+			}
+		}
+		std::cout << "i = " << i << "\npos = " << pos << std::endl;
+		pos++;
+		// std::cout << "loop" << std::endl;
+	}
+	std::cout << "main after insert = ";
 	printDoubleVec(main);
 	std::cout << std::endl;
 	// binInsert();
@@ -245,7 +314,7 @@ void	PmergeMe::fordJohnsonVec()
 void	PmergeMe::sortVec()
 {
 	_tVec = clock();
-	std::vector<std::vector<int> > vec;
+	std::vector<std::vector<size_t> > vec;
 	// int	u = 1;
 	_u = 1;
 
@@ -256,7 +325,7 @@ void	PmergeMe::sortVec()
 	{
 		if (i == _vecInput.size() - 1 && _hasStraggler)
 			break;
-		std::vector<int>	tmp;
+		std::vector<size_t>	tmp;
 		for (int j = 0; j < pow(2, _u); j++)
 		{
 			tmp.push_back(_vecInput[i]);
@@ -278,7 +347,7 @@ void	PmergeMe::sortVec()
 			vec[i].swap(vec[i+1]);
 	}
 	// printDoubleVec(vec);
-	std::cout << BLUE << "u = " << _u << RESET << std::endl;
+	std::cout << RED << "u = " << _u << RESET << std::endl;
 	_u++;
 	fillTmp1(vec);
 	printVec(_vecTmp);
