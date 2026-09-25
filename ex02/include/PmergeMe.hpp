@@ -6,7 +6,7 @@
 /*   By: gaducurt <gaducurt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/10 11:19:16 by gaducurt          #+#    #+#             */
-/*   Updated: 2026/09/24 16:08:22 by gaducurt         ###   ########.fr       */
+/*   Updated: 2026/09/25 13:30:25 by gaducurt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ class PmergeMe
 		void							printVec(std::vector<size_t> vec);
 		void							printDoubleVec(std::vector<std::vector<size_t> > vec);
 		void							cpVec(std::vector<std::vector<size_t> > vec);
-		void							fillTmp(std::vector<std::vector<size_t> > vec, std::vector<size_t> vecStraggler);
+		void							fillTmp(std::vector<size_t> rest);
 		void							binInsert();
 
 		/*----------std::deque----------*/

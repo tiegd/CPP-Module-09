@@ -6,7 +6,7 @@
 /*   By: gaducurt <gaducurt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/10 11:19:19 by gaducurt          #+#    #+#             */
-/*   Updated: 2026/09/24 16:49:23 by gaducurt         ###   ########.fr       */
+/*   Updated: 2026/09/25 15:26:57 by gaducurt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,30 +133,35 @@ void	PmergeMe::printDoubleVec(std::vector<std::vector<size_t> > vec)
 	// std::cout << "\n" << std::endl;
 }
 
-void	PmergeMe::fillTmp(std::vector<std::vector<size_t> > vec, std::vector<size_t> vecStraggler)
+void	PmergeMe::fillTmp(std::vector<size_t> rest)
 {
 	_vecTmp.clear();
-	for (size_t i = 0; i < vec.size(); i++)
+	// std::cout << "vec.size = " << vec.size() << std::endl;
+	for (size_t i = 0; i < _main.size(); i++)
 	{
+		// std::cout << "i = " << i << std::endl;
+		if (_main.size() % 2 != 0 && i == _main.size() - 1)
+			break;
 		std::cout << "[ ";
-		for (size_t j = 0; j < vec[i].size(); j++)
+		for (size_t j = 0; j < _main[i].size(); j++)
 		{
-			_vecTmp.push_back(vec[i][j]);
-			std::cout << GREEN << vec[i][j] << " " << RESET;
+			_vecTmp.push_back(_main[i][j]);
+			std::cout << GREEN << _main[i][j] << " " << RESET;
 		}
 		std::cout << "] ";
 	}
-	for (size_t i = 0; i < vecStraggler.size(); i++)
-	{
-		_vecTmp.push_back(vecStraggler[i]);
-		// std::cout << YELLOW << vecStraggler[i] << " " << RESET;
-	}
+	(void)rest;
+	// for (size_t i = 0; i < rest.size(); i++)
+	// {
+	// 	_vecTmp.push_back(rest[i]);
+	// 	// std::cout << YELLOW << vecStraggler[i] << " " << RESET;
+	// }
 	std::cout << std::endl;
 }
 
 void	PmergeMe::fordJohnsonVec()
 {
-	std::vector<size_t>	vecStraggler;
+	std::vector<size_t>	rest;
 
 	if ((std::size_t)pow(2, _u) >= _vecInput.size())
 		return ;
@@ -167,7 +172,7 @@ void	PmergeMe::fordJohnsonVec()
 	if (_u == 0)
 	{
 		if (_vecInput.size() % 2 != 0)
-			vecStraggler.push_back(_vecInput[_vecInput.size() - 1]);
+			rest.push_back(_vecInput[_vecInput.size() - 1]);
 		for (size_t i = 0; i < _vecInput.size(); i++)
 		{
 			tmp.clear();
@@ -185,27 +190,42 @@ void	PmergeMe::fordJohnsonVec()
 	else
 	{
 		_main.clear();
+		int count = 0;
 		for (size_t i = 0; i < _vecTmp.size(); i++)
 		{
 			tmp.clear();
-			if (i + pow(2, _u) < _vecTmp.size())
+			// if (i <= pow(2, _u))
+			if (i + pow(2, _u) * 2 <= _vecTmp.size() && count%2 == 0)
 			{
+				std::cout << "_vecTmp.size = " << _vecTmp.size() << "; i = " << i << "; i + pow(2, _u) = " << i + pow(2, _u) << std::endl;
+				// if (i + pow(2, _u) >= _vecTmp.size())
+				// 	break;
 				for (int j = 0; j < pow(2, _u); j++)
 				{
+					// if (i + pow(2, _u) >= _vecTmp.size())
+					// 	break;
+					std::cout << "i = " << i << std::endl;
 					tmp.push_back(_vecTmp[i]);
 					index = i;
 					if (j < pow(2, _u) - 1)
 						i++;
+					// std::cout << "j = " << j << " pow(2, _u) - 1 = " << pow(2, _u) - 1 << "\ni = " << i << std::endl;
 				}
+				count++;
 				_main.push_back(tmp);
 			}
 		}
-		index++;
+		// index++;
 		std::cout << RED << "_vecTmp = " << std::endl;
 		printVec(_vecTmp);
 		for (; index < _vecTmp.size(); index++)
-			vecStraggler.push_back(_vecTmp[index]);
-		std::cout << "_vecTmp = " << std::endl;
+		{
+			rest.push_back(_vecTmp[index]);
+			std::cout << YELLOW << "_vecTmp.size = " << _vecTmp.size() << "\nindex = " << index << "\nvecTmp[" << index << "] = " << _vecTmp[index] << RESET << std::endl;
+		}
+		std::cout << "vecStraggler = ";
+		printVec(rest);
+		std::cout << "_vecTmp = ";
 		printVec(_vecTmp);
 		std::cout << RESET;
 		if (_main.size() % 2 != 0)
@@ -217,13 +237,15 @@ void	PmergeMe::fordJohnsonVec()
 		}
 	}
 	_u++;
+	std::cout << "_vecTmp = ";
+	printVec(_vecTmp);
 	std::cout << "_main = ";
-	fillTmp(_main, vecStraggler);
+	fillTmp(rest);
 	// vecStraggler.clear();
 	std::cout << "_vecTmp = ";
 	printVec(_vecTmp);
 	std::cout << "vecStraggler = ";
-	printVec(vecStraggler);
+	printVec(rest);
 	std::cout << std::endl;
 	fordJohnsonVec();
 	
@@ -246,8 +268,8 @@ void	PmergeMe::fordJohnsonVec()
 		for (size_t i = 0; i < _main.size(); i++)
 			for (size_t j = 0; j < _main[i].size(); j++)
 				_vecTmp.push_back(_main[i][j]);
-		for (size_t i = 0; i < vecStraggler.size(); i++)
-			_vecTmp.push_back(vecStraggler[i]);
+		for (size_t i = 0; i < rest.size(); i++)
+			_vecTmp.push_back(rest[i]);
 		std::cout << "_vecTmp = ";
 		printVec(_vecTmp);
 		_main.clear();
@@ -270,15 +292,15 @@ void	PmergeMe::fordJohnsonVec()
 		std::cout << "\nmain = ";
 		printDoubleVec(_main);
 		for (; index < _vecTmp.size(); index++)
-			vecStraggler.push_back(_vecTmp[index]);
+			rest.push_back(_vecTmp[index]);
 		for (it = _main.begin() + 2; it < _main.end(); it++)
 		{
 			pend.push_back(*it);
 			_main.erase(it);
-			std::cout << YELLOW << "\npend = ";
-			printDoubleVec(pend);
-			std::cout << "\nmain = ";
-			printDoubleVec(_main);
+			// std::cout << YELLOW << "\npend = ";
+			// printDoubleVec(pend);
+			// std::cout << "\nmain = ";
+			// printDoubleVec(_main);
 			std::cout << RESET;
 		}
 		std::cout << "\n--------------------" << std::endl;
