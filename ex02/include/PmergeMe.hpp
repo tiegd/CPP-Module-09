@@ -6,7 +6,7 @@
 /*   By: gaducurt <gaducurt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/10 11:19:16 by gaducurt          #+#    #+#             */
-/*   Updated: 2026/09/23 18:33:18 by gaducurt         ###   ########.fr       */
+/*   Updated: 2026/09/24 16:08:22 by gaducurt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ class PmergeMe
 		int					_u;
 		bool				_hasStraggler;
 		size_t				_straggler;
-		std::vector<size_t>	_vecStraggler;
+		// std::vector<size_t>	_vecStraggler;
 		std::vector<std::vector<size_t> >	_main;
 
 		std::vector<size_t>	_vecResult;
@@ -46,8 +46,6 @@ class PmergeMe
 		PmergeMe(char** av);
 		~PmergeMe();
 		
-		void							swap(size_t &x, size_t &y);
-
 		/*----------std::parsing----------*/
 		void							parser(char** av);
 		
@@ -60,8 +58,7 @@ class PmergeMe
 		void							printVec(std::vector<size_t> vec);
 		void							printDoubleVec(std::vector<std::vector<size_t> > vec);
 		void							cpVec(std::vector<std::vector<size_t> > vec);
-		void							fillTmp1(std::vector<std::vector<size_t> > vec);
-		void							fillTmp2(std::vector<std::vector<size_t> > vec);
+		void							fillTmp(std::vector<std::vector<size_t> > vec, std::vector<size_t> vecStraggler);
 		void							binInsert();
 
 		/*----------std::deque----------*/
