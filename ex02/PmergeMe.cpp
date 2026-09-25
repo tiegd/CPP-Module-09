@@ -6,7 +6,7 @@
 /*   By: gaducurt <gaducurt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/10 11:19:19 by gaducurt          #+#    #+#             */
-/*   Updated: 2026/09/25 15:26:57 by gaducurt         ###   ########.fr       */
+/*   Updated: 2026/09/25 15:32:49 by gaducurt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,36 +194,30 @@ void	PmergeMe::fordJohnsonVec()
 		for (size_t i = 0; i < _vecTmp.size(); i++)
 		{
 			tmp.clear();
-			// if (i <= pow(2, _u))
 			if (i + pow(2, _u) * 2 <= _vecTmp.size() && count%2 == 0)
 			{
 				std::cout << "_vecTmp.size = " << _vecTmp.size() << "; i = " << i << "; i + pow(2, _u) = " << i + pow(2, _u) << std::endl;
-				// if (i + pow(2, _u) >= _vecTmp.size())
-				// 	break;
 				for (int j = 0; j < pow(2, _u); j++)
 				{
-					// if (i + pow(2, _u) >= _vecTmp.size())
-					// 	break;
 					std::cout << "i = " << i << std::endl;
 					tmp.push_back(_vecTmp[i]);
 					index = i;
 					if (j < pow(2, _u) - 1)
 						i++;
-					// std::cout << "j = " << j << " pow(2, _u) - 1 = " << pow(2, _u) - 1 << "\ni = " << i << std::endl;
 				}
 				count++;
 				_main.push_back(tmp);
 			}
 		}
 		// index++;
-		std::cout << RED << "_vecTmp = " << std::endl;
-		printVec(_vecTmp);
+		// std::cout << RED << "_vecTmp = " << std::endl;
+		// printVec(_vecTmp);
 		for (; index < _vecTmp.size(); index++)
 		{
 			rest.push_back(_vecTmp[index]);
-			std::cout << YELLOW << "_vecTmp.size = " << _vecTmp.size() << "\nindex = " << index << "\nvecTmp[" << index << "] = " << _vecTmp[index] << RESET << std::endl;
+			// std::cout << YELLOW << "_vecTmp.size = " << _vecTmp.size() << "\nindex = " << index << "\nvecTmp[" << index << "] = " << _vecTmp[index] << RESET << std::endl;
 		}
-		std::cout << "vecStraggler = ";
+		std::cout << "rest = ";
 		printVec(rest);
 		std::cout << "_vecTmp = ";
 		printVec(_vecTmp);
