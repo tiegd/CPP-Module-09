@@ -6,7 +6,7 @@
 /*   By: gaducurt <gaducurt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/10 11:19:19 by gaducurt          #+#    #+#             */
-/*   Updated: 2026/09/25 15:32:49 by gaducurt         ###   ########.fr       */
+/*   Updated: 2026/09/28 15:02:29 by gaducurt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,187 +161,192 @@ void	PmergeMe::fillTmp(std::vector<size_t> rest)
 
 void	PmergeMe::fordJohnsonVec()
 {
-	std::vector<size_t>	rest;
-
-	if ((std::size_t)pow(2, _u) >= _vecInput.size())
-		return ;
-	size_t	index = 0;
-	size_t add = 0;
-	std::vector<size_t>	tmp;
-	std::cout << BLUE << "u = " << _u << RESET << std::endl;
-	if (_u == 0)
-	{
-		if (_vecInput.size() % 2 != 0)
-			rest.push_back(_vecInput[_vecInput.size() - 1]);
-		for (size_t i = 0; i < _vecInput.size(); i++)
-		{
-			tmp.clear();
-			tmp.push_back(_vecInput[i]);
-			_main.push_back(tmp);
-		}
-		if (_main.size() % 2 != 0)
-			add = 1;
-		for (size_t i = 0; i < _main.size() - add; i+=2)
-		{
-			if (_main[i][_main[i].size() - 1] > _main[i+1][_main[i].size() - 1])
-				_main[i].swap(_main[i+1]);
-		}
-	}
-	else
-	{
-		_main.clear();
-		int count = 0;
-		for (size_t i = 0; i < _vecTmp.size(); i++)
-		{
-			tmp.clear();
-			if (i + pow(2, _u) * 2 <= _vecTmp.size() && count%2 == 0)
-			{
-				std::cout << "_vecTmp.size = " << _vecTmp.size() << "; i = " << i << "; i + pow(2, _u) = " << i + pow(2, _u) << std::endl;
-				for (int j = 0; j < pow(2, _u); j++)
-				{
-					std::cout << "i = " << i << std::endl;
-					tmp.push_back(_vecTmp[i]);
-					index = i;
-					if (j < pow(2, _u) - 1)
-						i++;
-				}
-				count++;
-				_main.push_back(tmp);
-			}
-		}
-		// index++;
-		// std::cout << RED << "_vecTmp = " << std::endl;
-		// printVec(_vecTmp);
-		for (; index < _vecTmp.size(); index++)
-		{
-			rest.push_back(_vecTmp[index]);
-			// std::cout << YELLOW << "_vecTmp.size = " << _vecTmp.size() << "\nindex = " << index << "\nvecTmp[" << index << "] = " << _vecTmp[index] << RESET << std::endl;
-		}
-		std::cout << "rest = ";
-		printVec(rest);
-		std::cout << "_vecTmp = ";
-		printVec(_vecTmp);
-		std::cout << RESET;
-		if (_main.size() % 2 != 0)
-			add = 1;
-		for (size_t i = 0; i < _main.size() - add; i+=2)
-		{
-			if (_main[i][_main[i].size() - 1] > _main[i+1][_main[i].size() - 1])
-				_main[i].swap(_main[i+1]);
-		}
-	}
-	_u++;
-	std::cout << "_vecTmp = ";
-	printVec(_vecTmp);
-	std::cout << "_main = ";
-	fillTmp(rest);
-	// vecStraggler.clear();
-	std::cout << "_vecTmp = ";
-	printVec(_vecTmp);
-	std::cout << "vecStraggler = ";
-	printVec(rest);
-	std::cout << std::endl;
-	fordJohnsonVec();
-	
-	/*----------Unrolling----------*/
-	
-	_u--;
-	std::cout << BLUE << "u = " << _u << RESET << std::endl;
-
-	std::vector<std::vector<size_t> >	pend;
-	std::vector<std::vector<size_t> >::iterator it;
-	std::cout << RED << "main.size() = " << _main.size() << RESET << std::endl;
-	std::cout << "main before insert = ";
-	printDoubleVec(_main);
-
-	if (pow(2, _u) < _vecInput.size())
-	{
-		std::cout << RED << "\ntest" << RESET << std::endl;
-		_vecTmp.clear();
-		std::cout << "\n_main.size() = " << _main.size() << std::endl;
-		for (size_t i = 0; i < _main.size(); i++)
-			for (size_t j = 0; j < _main[i].size(); j++)
-				_vecTmp.push_back(_main[i][j]);
-		for (size_t i = 0; i < rest.size(); i++)
-			_vecTmp.push_back(rest[i]);
-		std::cout << "_vecTmp = ";
-		printVec(_vecTmp);
-		_main.clear();
-	// }
-		for (size_t i = 0; i < _vecTmp.size(); i++)
-		{
-			tmp.clear();
-			if (i + pow(2, _u) < _vecTmp.size())
-			{
-				for (int j = 0; j < pow(2, _u); j++)
-				{
-					tmp.push_back(_vecTmp[i]);
-					index = i;
-					if (j < pow(2, _u) - 1)
-						i++;
-				}
-				_main.push_back(tmp);
-			}
-		}
-		std::cout << "\nmain = ";
-		printDoubleVec(_main);
-		for (; index < _vecTmp.size(); index++)
-			rest.push_back(_vecTmp[index]);
-		for (it = _main.begin() + 2; it < _main.end(); it++)
-		{
-			pend.push_back(*it);
-			_main.erase(it);
-			// std::cout << YELLOW << "\npend = ";
-			// printDoubleVec(pend);
-			// std::cout << "\nmain = ";
-			// printDoubleVec(_main);
-			std::cout << RESET;
-		}
-		std::cout << "\n--------------------" << std::endl;
-		std::cout << "pend = ";
-		printDoubleVec(pend);
-		std::cout << "\nmain = ";
-		printDoubleVec(_main);
-		size_t	pos = 0;
-		std::cout << "\npend.size() = " << pend.size() << std::endl;
-		for (size_t i = 0; i < pend.size(); i++)
-		{
-			if (pos == 0)
-			{
-				for (int jac = (int)_jacobVec[pos] - 2; jac >= 0; jac-- && i++)
-				{
-					std::cout << GREEN << "jac = " << jac << std::endl;// << "\ni = " << i << RESET << std::endl;
-					if (jac >= (int)pend.size())
-						while (jac >= (int)pend.size())
-							jac--;
-					std::vector<std::vector<size_t> >::iterator it = std::lower_bound(_main.begin(), _main.end(), pend[jac], CmpLast());
-					_main.insert(it, pend[jac]);
-					std::cout << BLUE << "\npend = ";
-					std::cout << "\nmain = ";
-					printDoubleVec(_main);
-					std::cout << RESET << std::endl;
-					// vecStraggler = fillTmp2(_main);
-				}
-				pos++;
-			}
-			else
-			{
-				for (int jac = (int)_jacobVec[pos] - 2; jac >= (int)_jacobVec[pos - 1]; jac-- && i++)
-				{
-					if (jac >= (int)pend.size())
-						while (jac >= (int)pend.size())
-							jac--;
-					std::vector<std::vector<size_t> >::iterator it = std::lower_bound(_main.begin(), _main.end(), pend[jac], CmpLast());
-					_main.insert(it, pend[jac]);
-				}
-			}
-			pos++;
-		}
-	}
-	std::cout << "main after insert = ";
-	printDoubleVec(_main);
-	std::cout << std::endl;
+	if (_u )
 }
+
+// void	PmergeMe::fordJohnsonVec()
+// {
+// 	std::vector<size_t>	rest;
+
+// 	if ((std::size_t)pow(2, _u) >= _vecInput.size())
+// 		return ;
+// 	size_t	index = 0;
+// 	size_t add = 0;
+// 	std::vector<size_t>	tmp;
+// 	std::cout << BLUE << "u = " << _u << RESET << std::endl;
+// 	if (_u == 0)
+// 	{
+// 		if (_vecInput.size() % 2 != 0)
+// 			rest.push_back(_vecInput[_vecInput.size() - 1]);
+// 		for (size_t i = 0; i < _vecInput.size(); i++)
+// 		{
+// 			tmp.clear();
+// 			tmp.push_back(_vecInput[i]);
+// 			_main.push_back(tmp);
+// 		}
+// 		if (_main.size() % 2 != 0)
+// 			add = 1;
+// 		for (size_t i = 0; i < _main.size() - add; i+=2)
+// 		{
+// 			if (_main[i][_main[i].size() - 1] > _main[i+1][_main[i].size() - 1])
+// 				_main[i].swap(_main[i+1]);
+// 		}
+// 	}
+// 	else
+// 	{
+// 		_main.clear();
+// 		int count = 0;
+// 		for (size_t i = 0; i < _vecTmp.size(); i++)
+// 		{
+// 			tmp.clear();
+// 			if (i + pow(2, _u) * 2 <= _vecTmp.size() && count%2 == 0)
+// 			{
+// 				std::cout << "_vecTmp.size = " << _vecTmp.size() << "; i = " << i << "; i + pow(2, _u) = " << i + pow(2, _u) << std::endl;
+// 				for (int j = 0; j < pow(2, _u); j++)
+// 				{
+// 					std::cout << "i = " << i << std::endl;
+// 					tmp.push_back(_vecTmp[i]);
+// 					index = i;
+// 					if (j < pow(2, _u) - 1)
+// 						i++;
+// 				}
+// 				count++;
+// 				_main.push_back(tmp);
+// 			}
+// 		}
+// 		// index++;
+// 		// std::cout << RED << "_vecTmp = " << std::endl;
+// 		// printVec(_vecTmp);
+// 		for (; index < _vecTmp.size(); index++)
+// 		{
+// 			rest.push_back(_vecTmp[index]);
+// 			// std::cout << YELLOW << "_vecTmp.size = " << _vecTmp.size() << "\nindex = " << index << "\nvecTmp[" << index << "] = " << _vecTmp[index] << RESET << std::endl;
+// 		}
+// 		std::cout << "rest = ";
+// 		printVec(rest);
+// 		std::cout << "_vecTmp = ";
+// 		printVec(_vecTmp);
+// 		std::cout << RESET;
+// 		if (_main.size() % 2 != 0)
+// 			add = 1;
+// 		for (size_t i = 0; i < _main.size() - add; i+=2)
+// 		{
+// 			if (_main[i][_main[i].size() - 1] > _main[i+1][_main[i].size() - 1])
+// 				_main[i].swap(_main[i+1]);
+// 		}
+// 	}
+// 	_u++;
+// 	std::cout << "_vecTmp = ";
+// 	printVec(_vecTmp);
+// 	std::cout << "_main = ";
+// 	fillTmp(rest);
+// 	// vecStraggler.clear();
+// 	std::cout << "_vecTmp = ";
+// 	printVec(_vecTmp);
+// 	std::cout << "vecStraggler = ";
+// 	printVec(rest);
+// 	std::cout << std::endl;
+// 	fordJohnsonVec();
+	
+// 	/*----------Unrolling----------*/
+	
+// 	_u--;
+// 	std::cout << BLUE << "u = " << _u << RESET << std::endl;
+
+// 	std::vector<std::vector<size_t> >	pend;
+// 	std::vector<std::vector<size_t> >::iterator it;
+// 	std::cout << RED << "main.size() = " << _main.size() << RESET << std::endl;
+// 	std::cout << "main before insert = ";
+// 	printDoubleVec(_main);
+
+// 	if (pow(2, _u) < _vecInput.size())
+// 	{
+// 		std::cout << RED << "\ntest" << RESET << std::endl;
+// 		_vecTmp.clear();
+// 		std::cout << "\n_main.size() = " << _main.size() << std::endl;
+// 		for (size_t i = 0; i < _main.size(); i++)
+// 			for (size_t j = 0; j < _main[i].size(); j++)
+// 				_vecTmp.push_back(_main[i][j]);
+// 		for (size_t i = 0; i < rest.size(); i++)
+// 			_vecTmp.push_back(rest[i]);
+// 		std::cout << "_vecTmp = ";
+// 		printVec(_vecTmp);
+// 		_main.clear();
+// 	// }
+// 		for (size_t i = 0; i < _vecTmp.size(); i++)
+// 		{
+// 			tmp.clear();
+// 			if (i + pow(2, _u) < _vecTmp.size())
+// 			{
+// 				for (int j = 0; j < pow(2, _u); j++)
+// 				{
+// 					tmp.push_back(_vecTmp[i]);
+// 					index = i;
+// 					if (j < pow(2, _u) - 1)
+// 						i++;
+// 				}
+// 				_main.push_back(tmp);
+// 			}
+// 		}
+// 		std::cout << "\nmain = ";
+// 		printDoubleVec(_main);
+// 		for (; index < _vecTmp.size(); index++)
+// 			rest.push_back(_vecTmp[index]);
+// 		for (it = _main.begin() + 2; it < _main.end(); it++)
+// 		{
+// 			pend.push_back(*it);
+// 			_main.erase(it);
+// 			// std::cout << YELLOW << "\npend = ";
+// 			// printDoubleVec(pend);
+// 			// std::cout << "\nmain = ";
+// 			// printDoubleVec(_main);
+// 			std::cout << RESET;
+// 		}
+// 		std::cout << "\n--------------------" << std::endl;
+// 		std::cout << "pend = ";
+// 		printDoubleVec(pend);
+// 		std::cout << "\nmain = ";
+// 		printDoubleVec(_main);
+// 		size_t	pos = 0;
+// 		std::cout << "\npend.size() = " << pend.size() << std::endl;
+// 		for (size_t i = 0; i < pend.size(); i++)
+// 		{
+// 			if (pos == 0)
+// 			{
+// 				for (int jac = (int)_jacobVec[pos] - 2; jac >= 0; jac-- && i++)
+// 				{
+// 					std::cout << GREEN << "jac = " << jac << std::endl;// << "\ni = " << i << RESET << std::endl;
+// 					if (jac >= (int)pend.size())
+// 						while (jac >= (int)pend.size())
+// 							jac--;
+// 					std::vector<std::vector<size_t> >::iterator it = std::lower_bound(_main.begin(), _main.end(), pend[jac], CmpLast());
+// 					_main.insert(it, pend[jac]);
+// 					std::cout << BLUE << "\npend = ";
+// 					std::cout << "\nmain = ";
+// 					printDoubleVec(_main);
+// 					std::cout << RESET << std::endl;
+// 					// vecStraggler = fillTmp2(_main);
+// 				}
+// 				pos++;
+// 			}
+// 			else
+// 			{
+// 				for (int jac = (int)_jacobVec[pos] - 2; jac >= (int)_jacobVec[pos - 1]; jac-- && i++)
+// 				{
+// 					if (jac >= (int)pend.size())
+// 						while (jac >= (int)pend.size())
+// 							jac--;
+// 					std::vector<std::vector<size_t> >::iterator it = std::lower_bound(_main.begin(), _main.end(), pend[jac], CmpLast());
+// 					_main.insert(it, pend[jac]);
+// 				}
+// 			}
+// 			pos++;
+// 		}
+// 	}
+// 	std::cout << "main after insert = ";
+// 	printDoubleVec(_main);
+// 	std::cout << std::endl;
+// }
 
 void	PmergeMe::sortVec()
 {
