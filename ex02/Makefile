@@ -10,8 +10,7 @@ INC = include
 
 INCLUDE = $(addprefix -I , $(INC))
 
-SRC =	test.cpp	\
-# SRC =	main.cpp PmergeMe.cpp	\
+SRC =	main.cpp PmergeMe.cpp	\
 
 OBJ := $(addprefix $(BIN), $(SRC:.cpp=.o))
 DEPS =   $(OBJ:.o=.d)
