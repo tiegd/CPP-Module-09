@@ -6,7 +6,7 @@
 /*   By: gaducurt <gaducurt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/29 14:45:08 by gaducurt          #+#    #+#             */
-/*   Updated: 2026/09/15 14:16:48 by gaducurt         ###   ########.fr       */
+/*   Updated: 2026/09/29 17:31:50 by gaducurt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ void	BitcoinExchange::fillDbMap()
 		i++;
 	}
 	db.close();
-	// std::cout << "max = " << _maxDate << "\nmin = " << _minDate << std::endl;
 }
 
 void	BitcoinExchange::compute()
@@ -97,6 +96,7 @@ void	BitcoinExchange::compute()
 	std::fstream		input;
 	std::string			tmp;
 	int		i = 0;
+	bool	check;
 	double	coef;
 
 	input.open(_input.c_str());
@@ -115,11 +115,24 @@ void	BitcoinExchange::compute()
 						it--;
 					getline(ss, tmp, ' ');
 					getline(ss, tmp, ' ');
-					coef = atof(tmp.c_str());
-					if (checkCoef(coef))
+					check = true;
+					for (size_t i = 0; i < tmp.size(); i++)
 					{
-						int nbFloat = countDecimal(it->second);
-						std::cout << it->first << " => " << coef << " = " << std::setprecision(nbFloat + 4) << coef * it->second << std::endl;
+						if (tmp.find_first_not_of("0123456789.-") != std::string::npos)
+						{
+							std::cout << "Error: coef is empty or bad input" << std::endl;
+							check = false;
+							break;
+						}
+					}
+					if (check)
+					{
+						coef = atof(tmp.c_str());
+						if (checkCoef(coef))
+						{
+							int nbFloat = countDecimal(it->second);
+							std::cout << it->first << " => " << coef << " = " << std::setprecision(nbFloat + 4) << coef * it->second << std::endl;
+						}
 					}
 				}
 			}
