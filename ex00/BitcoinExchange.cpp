@@ -6,7 +6,7 @@
 /*   By: gaducurt <gaducurt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/29 14:45:08 by gaducurt          #+#    #+#             */
-/*   Updated: 2026/09/29 17:31:50 by gaducurt         ###   ########.fr       */
+/*   Updated: 2026/09/30 10:40:53 by gaducurt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,7 @@ BitcoinExchange::BitcoinExchange(std::string input)
 {
 	std::ifstream db;
 	_input = input;
-	try
-	{
-		fillDbMap();
-	}
-	catch (std::exception &e)
-	{
-		std::cerr << e.what() << std::endl;
-	}
+	fillDbMap();
 }
 
 void	BitcoinExchange::displayDb()
@@ -63,6 +56,8 @@ void	BitcoinExchange::fillDbMap()
 	int					i = 0;
 
 	db.open("data.csv");
+	if (db.fail())
+		throw std::logic_error("Error: invalid data file");
 	while (getline(db, line))
 	{
 		if (i > 0)
@@ -100,6 +95,8 @@ void	BitcoinExchange::compute()
 	double	coef;
 
 	input.open(_input.c_str());
+	if (input.fail())
+		throw std::logic_error("Error: invalid input file");
 	while (getline(input, line))
 	{
 		std::stringstream	ss(line);

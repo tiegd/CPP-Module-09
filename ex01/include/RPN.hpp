@@ -6,7 +6,7 @@
 /*   By: gaducurt <gaducurt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/06 15:11:25 by gaducurt          #+#    #+#             */
-/*   Updated: 2026/08/07 10:37:44 by gaducurt         ###   ########.fr       */
+/*   Updated: 2026/09/30 10:55:34 by gaducurt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 class   Rpn
 {
 	private:
-		std::stack<int>	_stack;
+		std::stack<size_t>	_stack;
 		std::string		_input;
 		Rpn();
 		void	parser();

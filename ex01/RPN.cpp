@@ -6,13 +6,14 @@
 /*   By: gaducurt <gaducurt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/06 15:11:11 by gaducurt          #+#    #+#             */
-/*   Updated: 2026/09/15 13:16:38 by gaducurt         ###   ########.fr       */
+/*   Updated: 2026/09/30 11:13:53 by gaducurt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "RPN.hpp"
 #include <sstream>
 #include <cstdlib>
+#include <climits>
 
 Rpn::Rpn()
 {
@@ -62,7 +63,7 @@ void	Rpn::parser()
 	if (_input.size() == 0)
 		throw std::logic_error("Error: string is empty");
 	else if (nbDigit - 1 > nbOp)
-		throw std::logic_error("Error: too many numbers: " + _input);
+		throw std::logic_error("Error: too many numbers or number biger than 9: " + _input);
 	else if (nbDigit - 1 < nbOp)
 		throw std::logic_error("Error: too many operators: " + _input);
 	std::string	tmp;
@@ -87,7 +88,15 @@ void	Rpn::compute()
 	while (getline(ss, tmp, ' '))
 	{
 		if (std::isdigit(tmp[0]))
-			_stack.push(std::atoi(tmp.c_str()));
+		{
+			size_t	nb = std::strtol(tmp.c_str(), NULL, 10);
+			if (nb > INT_MAX)
+			{
+				throw std::logic_error("Error: overflow");
+			}
+			// _stack.push(std::atoi(tmp.c_str()));
+			_stack.push(nb);
+		}
 		else
 		{
 			switch(tmp[0])
@@ -112,56 +121,66 @@ void	Rpn::compute()
 
 void	Rpn::add()
 {
-	int	tmp;
-	int	res;
+	size_t	tmp;
+	size_t	res;
 
 	if (_stack.size() < 1)
 		throw std::logic_error("Error");
 	tmp = _stack.top();
 	_stack.pop();
 	res = _stack.top() + tmp;
+	if (res > INT_MAX)
+		throw std::logic_error("Error: overflow");
 	_stack.pop();
 	_stack.push(res);
 }
 
 void	Rpn::sub()
 {
-	int	tmp;
-	int	res;
+	size_t	tmp;
+	size_t	res;
 
 	if (_stack.size() < 1)
 		throw std::logic_error("Error");
 	tmp = _stack.top();
 	_stack.pop();
 	res = _stack.top() - tmp;
+	if (res > INT_MAX)
+		throw std::logic_error("Error: overflow");
 	_stack.pop();
 	_stack.push(res);
 }
 
 void	Rpn::mult()
 {
-	int	tmp;
-	int	res;
+	size_t	tmp;
+	size_t	res;
 
 	if (_stack.size() < 1)
 		throw std::logic_error("Error");
 	tmp = _stack.top();
 	_stack.pop();
 	res = _stack.top() * tmp;
+	if (res > INT_MAX)
+		throw std::logic_error("Error: overflow");
 	_stack.pop();
 	_stack.push(res);
 }
 
 void	Rpn::div()
 {
-	int	tmp;
-	int	res;
+	size_t	tmp;
+	size_t	res;
 
 	if (_stack.size() < 1)
 		throw std::logic_error("Error");
+	if (_stack.top() == 0)
+		throw std::logic_error("Error: div by 0");
 	tmp = _stack.top();
 	_stack.pop();
 	res = _stack.top() / tmp;
+	if (res > INT_MAX)
+		throw std::logic_error("Error: overflow");
 	_stack.pop();
 	_stack.push(res);
 }
